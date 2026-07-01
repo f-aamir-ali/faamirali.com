@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="F. Aamir Ali">
+  <rect width="64" height="64" rx="15" fill="#16140f"/>
+  <circle cx="19" cy="21" r="4.5" fill="#d9402a"/>
+  <text x="32" y="47" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="30" font-weight="800" fill="#f1ede5">FA</text>
+</svg>

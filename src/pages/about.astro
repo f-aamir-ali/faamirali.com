@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { SITE_URL, CANONICAL_DESCRIPTION, profilePageJsonLd } from '../data/site.js';
+
+const title = 'About — F. Aamir Ali';
+const description =
+  'The full story: how F. Aamir Ali built FleetBot, founded the AI & Innovation Club, and ran the Surrey Youth AI Summit — and the thread that connects them.';
+---
+<Base
+  title={title}
+  description={description}
+  canonical="/about"
+  ogImage="/og/about.png"
+  jsonLd={profilePageJsonLd(`${SITE_URL}/about`)}
+>
+  <section class="section">
+    <div class="wrap about-grid">
+      <div class="about-left">
+        <a class="back" href="/"><span aria-hidden="true">←</span> Back home</a>
+        <h1 class="a-title">The <span class="serif">story.</span></h1>
+        <p class="a-lead">{CANONICAL_DESCRIPTION}</p>
+        <p class="a-para">I started by building FleetBot — an assistant that answers the questions a 1,500-student school asks all day. Getting it onto a real terminal in the front office taught me that shipping the code is the easy half; the hard half is whether anyone actually uses the thing.</p>
+        <p class="a-para">From there I founded the AI &amp; Innovation Club to get other students building, then ran the Surrey Youth AI Summit — ~70 students, 14 schools, a real sponsor, and a UBC keynote, all in one day.</p>
+        <p class="a-para">What I keep coming back to is where AI meets real institutions — access, integration, and whether anyone actually needs the thing. That’s the kind of problem I care about.</p>
+      </div>
+      <div class="about-right">
+        <Placeholder label="headshot.jpg" sub="real photo — drop in" ratio="4 / 5" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 54px; align-items: start; }
+  .back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-bottom: 30px; transition: color .2s ease; }
+  .back:hover { color: var(--ink); }
+  .a-title { font-size: clamp(40px, 5.4vw, 68px); font-weight: 700; letter-spacing: -0.035em; line-height: 0.98; margin-bottom: 26px; }
+  .a-lead { font-size: 19px; line-height: 1.55; color: var(--ink); font-weight: 500; margin-bottom: 20px; }
+  .a-para { font-size: 16.5px; line-height: 1.68; color: #3a362f; margin-bottom: 16px; }
+  .about-right { position: sticky; top: 110px; }
+  @media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; gap: 34px; }
+    .about-right { position: static; max-width: 360px; }
+  }
+</style>

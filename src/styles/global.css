@@ -1,0 +1,93 @@
+/* =========================================================
+   faamirali.com — design tokens + base
+   Palette & type extracted verbatim from the design template
+   (faamirali.dc.html). Light editorial system.
+   ========================================================= */
+:root {
+  --canvas: #f1ede5;
+  --ink: #1a1813;
+  --card: #fbf9f4;
+  --accent: #d9402a;
+  --accent-hover: #c2331f;
+  --muted: #6f6a5f;
+  --muted-2: #54504a;
+  --faint: #a39d90;
+  --line: rgba(26, 24, 19, 0.09);
+  --line-2: rgba(26, 24, 19, 0.14);
+  --dark: #16140f;
+  --dark-text: #ece8df;
+  --dark-muted: #948e82;
+  --green: #3f9d6b;
+  --green-text: #3f8f5f;
+
+  --maxw: 1180px;
+
+  --font-sans: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+::selection { background: rgba(217, 64, 42, 0.18); }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+h1, h2, h3, p { margin: 0; }
+main { display: block; }
+
+/* ---- shared primitives ---- */
+.wrap { max-width: var(--maxw); margin: 0 auto; width: 100%; }
+.section { padding: 40px 34px; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+.accent { color: var(--accent); }
+
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 9px; white-space: nowrap;
+  font-family: var(--font-sans); font-weight: 600; font-size: 15px;
+  padding: 15px 28px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.btn-dark { color: var(--canvas); background: var(--ink); border-color: var(--ink); }
+.btn-dark:hover { transform: translateY(-2px); background: #000; }
+.btn-ghost { color: var(--ink); background: transparent; border-color: var(--line-2); }
+.btn-ghost:hover { transform: translateY(-2px); border-color: var(--ink); }
+
+.tag {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--ink); padding: 8px 14px; border-radius: 999px;
+  background: rgba(26, 24, 19, 0.05); border: 1px solid rgba(26, 24, 19, 0.08);
+}
+
+.status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.status .s-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; animation: none !important; }
+}
+
+@media (max-width: 760px) {
+  .section { padding: 34px 20px; }
+}

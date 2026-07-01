@@ -1,0 +1,119 @@
+---
+// Bento proof grid for a project page. Renders stats, a media placeholder,
+// the live-link + PDF column, and a distinctive full-width tile (quote or note).
+const { proj } = Astro.props;
+---
+<div class="proof">
+  {proj.stats.map((s) => (
+    <div class="cell stat">
+      <div class="stat-n">{s.n}</div>
+      <div class="stat-l">{s.l}</div>
+    </div>
+  ))}
+
+  <div class="cell media m8">
+    {proj.media.corner && <span class="m-corner">{proj.media.corner}</span>}
+    {proj.media.video && <span class="m-play" aria-hidden="true">▶</span>}
+    <span class="m-cap">{proj.media.label} · <em>{proj.media.sub}</em></span>
+  </div>
+
+  <div class="cell sidecol m4">
+    {proj.live.href ? (
+      <a class="subtile dark" href={proj.live.href} target="_blank" rel="noopener noreferrer">
+        <span class="s-note">{proj.live.note}</span>
+        <span class="s-main">{proj.live.label} →</span>
+      </a>
+    ) : (
+      <div class="subtile dark is-soon">
+        <span class="s-note">{proj.live.note} — drop in</span>
+        <span class="s-main">{proj.live.label} →</span>
+      </div>
+    )}
+    <a class="subtile light" href={proj.pdf} target="_blank" rel="noopener noreferrer">
+      <span class="s-note light-note">Full case study</span>
+      <span class="s-main ink">Read the PDF →</span>
+    </a>
+  </div>
+
+  {proj.media2 && (
+    <div class="cell media m12 short">
+      <span class="m-cap">{proj.media2.label} · <em>{proj.media2.sub}</em></span>
+    </div>
+  )}
+
+  {proj.quote && (
+    <div class="cell quote m12">
+      <p class="q-text serif">{proj.quote.text}</p>
+      <div class="q-attr"><span class="q-line"></span>{proj.quote.attr}</div>
+    </div>
+  )}
+
+  {proj.note && (
+    <div class="cell note m12">
+      <div class="n-eyebrow">{proj.note.eyebrow}</div>
+      <div class="n-big">{proj.note.big}</div>
+      <p class="n-sub">{proj.note.sub}</p>
+    </div>
+  )}
+</div>
+
+<style>
+  .proof { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  .cell { border-radius: 20px; }
+  .stat { grid-column: span 4; background: var(--card); border: 1px solid var(--line); padding: 24px; }
+  .stat-n { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+  .stat-l { font-size: 13.5px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+  .m8 { grid-column: span 8; }
+  .m4 { grid-column: span 4; }
+  .m12 { grid-column: span 12; }
+
+  .media {
+    position: relative; min-height: 260px; border: 1px solid var(--line); border-radius: 22px; overflow: hidden;
+    background: repeating-linear-gradient(135deg, rgba(26,24,19,0.05) 0 13px, rgba(26,24,19,0.018) 13px 26px);
+    display: flex; align-items: flex-end; padding: 20px;
+  }
+  .media.short { min-height: 180px; }
+  .m-cap { position: relative; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .m-cap em { color: var(--faint); font-style: normal; }
+  .m-corner { position: absolute; top: 16px; right: 18px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; color: var(--accent); }
+  .m-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 58px; height: 58px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; padding-left: 3px;
+    box-shadow: 0 10px 26px rgba(217, 64, 42, 0.35);
+  }
+
+  .sidecol { display: flex; flex-direction: column; gap: 14px; }
+  .subtile {
+    flex: 1; border-radius: 20px; padding: 22px; min-height: 120px; text-decoration: none;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .subtile.dark { background: var(--ink); color: var(--canvas); }
+  .subtile.dark:hover { background: #000; }
+  .subtile.dark.is-soon { opacity: 0.9; cursor: default; }
+  .subtile.light { background: var(--card); border: 1px solid var(--line); color: var(--ink); }
+  .subtile.light:hover { border-color: rgba(26, 24, 19, 0.3); }
+  .s-note { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #a39d90; }
+  .s-note.light-note { color: var(--muted); }
+  .s-main { font-size: 17px; font-weight: 700; }
+  .s-main.ink { color: var(--ink); }
+
+  .quote { background: var(--card); border: 1px solid var(--line); padding: 32px 34px; }
+  .q-text { font-size: clamp(20px, 2.5vw, 28px); line-height: 1.32; color: var(--ink); margin-bottom: 16px; }
+  .q-attr { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+  .q-line { width: 24px; height: 1px; background: rgba(26, 24, 19, 0.3); }
+
+  .note { background: var(--card); border: 1px solid var(--line); padding: 30px 34px; }
+  .n-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .n-big { font-size: clamp(24px, 3vw, 34px); font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+  .n-sub { font-size: 15px; color: var(--muted); line-height: 1.55; margin-top: 12px; max-width: 70ch; }
+
+  @media (max-width: 760px) {
+    .stat { grid-column: span 6; }
+    .m8, .m4, .m12 { grid-column: span 12; }
+  }
+  @media (max-width: 460px) {
+    .stat { grid-column: span 12; }
+  }
+</style>
