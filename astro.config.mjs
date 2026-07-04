@@ -8,6 +8,16 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // The dev toolbar popup is a dev-only Astro UI affordance, not something
+  // that ships to production — disabled per owner preference.
+  devToolbar: {
+    enabled: false,
+  },
+  // Honor an externally-assigned PORT (e.g. from dev tooling) instead of
+  // Astro's own auto-increment-from-4321 behavior.
+  server: {
+    port: process.env.PORT ? Number(process.env.PORT) : 4321,
+  },
   vite: {
     server: {
       // The dev server may be launched via the folder's 8.3 short path

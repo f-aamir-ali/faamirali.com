@@ -1,42 +1,60 @@
 ---
+// A compact proof card for the home work grid. Order: title, then the
+// single most impressive sourced number, then a plain one-sentence
+// summary anyone can understand — no dates, no jargon, nothing truncated.
 const { project } = Astro.props;
-const toneColor = project.statusTone === 'accent' ? 'var(--accent)' : 'var(--green)';
-const toneText = project.statusTone === 'accent' ? '#b8401f' : 'var(--green-text)';
+const headline = project.ledger[0];
 ---
-<a class="row" href={`/work/${project.slug}`}>
-  <span class="idx">{project.order}</span>
-  <div class="mid">
-    <h3 class="r-name">{project.name}</h3>
-    <p class="r-line">{project.cardLine}</p>
+<a class="card" href={`/work/${project.slug}`}>
+  <div class="card-top">
+    <h3 class="card-name">{project.name}</h3>
+    <span class="card-arrow" aria-hidden="true">→</span>
   </div>
-  <div class="right">
-    <span class="tag hide-sm">{project.cardTag}</span>
-    <span class="status hide-xs" style={`color:${toneText}`}>
-      <span class="s-dot" style={`background:${toneColor}`}></span>{project.status}
-    </span>
-    <span class="arrow" aria-hidden="true">↗</span>
+
+  <div class="card-stat">
+    <div class="stat-n">{headline.n}</div>
+    <div class="stat-l">{headline.l}</div>
   </div>
+
+  <div class="card-divider"></div>
+
+  <p class="card-summary">{project.cardLine}</p>
 </a>
 
 <style>
-  .row {
-    display: flex; align-items: center; gap: 28px; padding: 30px 34px; border-radius: 24px;
-    background: var(--card); border: 1px solid var(--line); text-decoration: none; color: inherit;
+  .card {
+    display: flex; flex-direction: column; gap: 16px; padding: 26px;
+    border-radius: var(--r); background: var(--card); border: 1px solid var(--line);
+    text-decoration: none; color: inherit; height: 100%;
     transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
   }
-  .row:hover { transform: translateY(-3px); border-color: rgba(217, 64, 42, 0.4); box-shadow: 0 18px 40px rgba(26, 24, 19, 0.08); }
-  .idx { font-family: var(--font-mono); font-size: 14px; color: var(--accent); flex: 0 0 auto; }
-  .mid { flex: 1; min-width: 0; }
-  .r-name { font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .r-line { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
-  .right { display: flex; align-items: center; gap: 18px; flex: 0 0 auto; }
-  .arrow { font-size: 22px; color: var(--ink); }
-  @media (max-width: 680px) {
-    .row { gap: 16px; padding: 22px 20px; }
-    .hide-sm { display: none; }
-    .right { gap: 12px; }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 20px 44px rgba(26, 24, 19, 0.1); }
+  .card:hover .card-name { color: var(--accent); }
+  .card:hover .card-arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+  /* Titles and stat labels wrap to 1 or 2 lines depending on content, which
+     used to leave the divider below at a different height per card. Both
+     reserve fixed 2-line space (in em units, so it scales with the clamp)
+     regardless of actual line count, keeping every divider level. */
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card-name {
+    font-size: clamp(20px, 2.2vw, 24px); font-weight: 700; letter-spacing: -0.01em;
+    line-height: 1.15; min-height: calc(1.15em * 2); transition: color .2s ease;
   }
-  @media (max-width: 460px) {
-    .hide-xs { display: none; }
+  .card-arrow { font-size: 18px; color: var(--faint); flex: 0 0 auto; transition: transform .2s ease, color .2s ease; }
+
+  .card-stat { display: flex; flex-direction: column; gap: 6px; }
+  .stat-n {
+    font-size: clamp(32px, 4.2vw, 42px); font-weight: 800; letter-spacing: -0.02em;
+    color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.05;
+  }
+  .stat-l { font-size: 13px; color: var(--muted-2); line-height: 1.4; min-height: calc(1.4em * 2); }
+
+  .card-divider { height: 1px; background: var(--line); }
+
+  .card-summary { font-size: 14.5px; color: var(--muted-2); line-height: 1.55; }
+
+  @media (max-width: 480px) {
+    .card { padding: 22px; }
   }
 </style>

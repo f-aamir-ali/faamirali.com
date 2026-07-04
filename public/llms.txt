@@ -1,9 +1,10 @@
 # F. Aamir Ali
 
-> F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school — recognized by the school's principal as the first student-built system of its kind there — and founded the Surrey Youth AI Summit, which brought ~70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.
+> F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school — recognized by the school's principal as the first student-built system of its kind there — and planned and executed the first youth AI summit in Surrey, which brought ~70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.
 
 ## Pages
-- [About](https://faamirali.com/about): Full background — what he builds and how he works.
-- [FleetBot](https://faamirali.com/work/fleetbot): An AI assistant deployed inside a 1,500-student school — the build, the deployment, and an honest account of adoption.
-- [Surrey Youth AI Summit](https://faamirali.com/work/surrey-ai-summit): A one-day youth AI competition — ~70 students, 14 schools, a real sponsor, and a UBC keynote.
-- [AI & Innovation Club](https://faamirali.com/work/ai-club): The club he founded to teach students to build with AI.
+- [About](https://faamirali.com/about): Full background — the short canonical record and the long first-person story.
+- [FleetBot](https://faamirali.com/work/fleetbot): Two AI assistants built for a 1,500-student school — a student chatbot whose public beta ran on $2.76 with zero errors, and a staff assistant deployed on a front-office terminal that handled 150+ queries in its first 10 days. Full case-study PDFs for both builds.
+- [Surrey Youth AI Summit](https://faamirali.com/work/surrey-ai-summit): The first youth AI summit in Surrey — a one-day event he planned and executed: ~70 students from 14 schools, a real sponsor, professional judges, and a UBC keynote.
+- [AI & Innovation Club](https://faamirali.com/work/ai-club): The club he founded to teach students to build with AI — 20 members, a real build shipped every meeting.
+- [Honours](https://faamirali.com/honours): The formal record — his principal's recommendation letter in full, plus certificates and scholarship wins as they're awarded.

@@ -1,14 +1,16 @@
 /* =========================================================
    faamirali.com — design tokens + base
-   Palette & type extracted verbatim from the design template
-   (faamirali.dc.html). Light editorial system.
+   Palette: cream paper · typewriter ink · ONE accent (dark brown).
+   Rounding: pill/rounded everywhere, matching the header pills.
+   Type: Archivo (display + body) · IBM Plex Mono (utility) ·
+   Newsreader italic (the letter/quote moments only).
    ========================================================= */
 :root {
-  --canvas: #f1ede5;
-  --ink: #1a1813;
-  --card: #fbf9f4;
-  --accent: #d9402a;
-  --accent-hover: #c2331f;
+  --canvas: #f1ede5; /* cream paper */
+  --ink: #1a1813; /* typewriter ink */
+  --card: #fbf9f4; /* document white */
+  --accent: #4a2f1d; /* dark brown — the single accent */
+  --accent-hover: #34210f;
   --muted: #6f6a5f;
   --muted-2: #54504a;
   --faint: #a39d90;
@@ -17,13 +19,14 @@
   --dark: #16140f;
   --dark-text: #ece8df;
   --dark-muted: #948e82;
-  --green: #3f9d6b;
-  --green-text: #3f8f5f;
 
   --maxw: 1180px;
+  --r: 24px; /* card / tile rounding — matches the header's roundness */
+  --r-card: 24px;
+  --r-pill: 999px; /* fully rounded — buttons, tags, nav pills */
 
-  --font-sans: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -36,10 +39,10 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  line-height: 1.5;
+  line-height: 1.55;
   overflow-x: hidden;
 }
-::selection { background: rgba(217, 64, 42, 0.18); }
+::selection { background: rgba(74, 47, 29, 0.16); }
 a { color: inherit; }
 img { max-width: 100%; display: block; }
 h1, h2, h3, p { margin: 0; }
@@ -49,38 +52,40 @@ main { display: block; }
 .wrap { max-width: var(--maxw); margin: 0 auto; width: 100%; }
 .section { padding: 40px 34px; }
 
+/* mono documentation voice — eyebrows, meta lines, sources */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
-.serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+.meta-line {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.6;
+}
+/* the quote/letter voice — used sparingly */
+.serif { font-family: var(--font-serif); font-style: italic; font-weight: 450; letter-spacing: 0; }
 .accent { color: var(--accent); }
 
+/* small round marker, matching the header's pill roundness */
 .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 
 .btn {
   display: inline-flex; align-items: center; gap: 9px; white-space: nowrap;
   font-family: var(--font-sans); font-weight: 600; font-size: 15px;
-  padding: 15px 28px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  padding: 15px 28px; border-radius: var(--r-pill); cursor: pointer; text-decoration: none;
   border: 1px solid transparent;
-  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
 }
-.btn-dark { color: var(--canvas); background: var(--ink); border-color: var(--ink); }
-.btn-dark:hover { transform: translateY(-2px); background: #000; }
+.btn-dark { color: var(--card); background: var(--ink); border-color: var(--ink); }
+.btn-dark:hover { transform: translateY(-2px); background: var(--accent); border-color: var(--accent); }
 .btn-ghost { color: var(--ink); background: transparent; border-color: var(--line-2); }
-.btn-ghost:hover { transform: translateY(-2px); border-color: var(--ink); }
-
-.tag {
-  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--ink); padding: 8px 14px; border-radius: 999px;
-  background: rgba(26, 24, 19, 0.05); border: 1px solid rgba(26, 24, 19, 0.08);
-}
-
-.status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-.status .s-dot { width: 7px; height: 7px; border-radius: 50%; }
+.btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 

@@ -1,7 +1,10 @@
-// Generate the linked case-study PDFs from the source Markdown.
-// Lightly filtered: removes explicitly future/planning sections so the PDFs
-// match the site's "only what's already done" rule. Club count normalized to 20.
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+// Generate the linked case-study PDFs from the NEW source Markdown
+// (the "_f" final versions). Per Blueprint v3 §1.4: light formatting +
+// a privacy scrub only — the case studies are the long-form record, so
+// their substance is NOT rewritten. One normalization is applied: the
+// club member count is 20 everywhere (locked decision, backed by the
+// principal's letter), so the stray "12 active members" line is aligned.
+import { readFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { marked } from 'marked';
@@ -11,126 +14,75 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '..', 'public', 'pdf');
 const SRC = 'C:/Users/fateh/Downloads/College Applications/Main Projects';
 
-const studentPath = `${SRC}/FleetBot (Student)/FleetBot Student Case Study.md`;
-const staffPath = `${SRC}/FleetBot (Staff)/FleetBot Staff Case Study.md`;
-const syaisPath = `${SRC}/SYAIS/SYAIS Case Study.md`;
-const clubPath = `${SRC}/AI Club/AI Club Case Study.md`;
-
-// --- filtering helpers ---
-function dropSections(lines, headings) {
-  for (const h of headings) {
-    const start = lines.findIndex((l) => l.startsWith('## ') && l.includes(h));
-    if (start !== -1) {
-      let end = lines.findIndex((l, i) => i > start && l.startsWith('## '));
-      if (end === -1) end = lines.length;
-      lines.splice(start, end - start);
-    }
-  }
-  return lines;
-}
-function dropBlocks(lines, markers) {
-  for (const m of markers) {
-    let i = lines.findIndex((l) => l.includes(m));
-    while (i !== -1) {
-      let end = i + 1;
-      while (end < lines.length && !(lines[end].trim() === '---' || lines[end].startsWith('## '))) end++;
-      lines.splice(i, end - i);
-      i = lines.findIndex((l) => l.includes(m));
-    }
-  }
-  return lines;
-}
-function filterMd(md, { sections = [], blocks = [], lines: dropLines = [], replacements = [] } = {}) {
-  let lines = md.split('\n');
-  lines = dropSections(lines, sections);
-  lines = dropBlocks(lines, blocks);
-  if (dropLines.length) lines = lines.filter((l) => !dropLines.some((d) => l.includes(d)));
-  let out = lines.join('\n');
+function applyReplacements(md, replacements = []) {
+  let out = md;
   for (const [a, b] of replacements) out = out.split(a).join(b);
   return out;
 }
 
+// Print skin — matches the site (cream-adjacent paper kept white for
+// print, typewriter ink, single dark-brown accent, ruled heads).
 const PRINT_CSS = `
   @page { size: A4; margin: 18mm 16mm; }
-  :root{ --ink:#1a1813; --accent:#d9402a; --muted:#5a564e; --line:#e4dfd4; }
+  :root{ --ink:#1a1813; --accent:#4a2f1d; --muted:#5c574b; --line:#e3ded2; }
   * { box-sizing: border-box; }
-  body { font-family:'Schibsted Grotesk',system-ui,sans-serif; color:var(--ink); font-size:10.6pt; line-height:1.62; margin:0; }
-  .brand { display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; font-size:9pt; letter-spacing:0.04em; color:var(--muted); text-transform:uppercase; padding-bottom:14px; margin-bottom:26px; border-bottom:1px solid var(--line); }
+  body { font-family:'Archivo',system-ui,sans-serif; color:var(--ink); font-size:10.6pt; line-height:1.62; margin:0; }
+  .brand { display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; font-size:9pt; letter-spacing:0.06em; color:var(--muted); text-transform:uppercase; padding-bottom:14px; margin-bottom:26px; border-bottom:2px solid var(--ink); }
   .brand .bdot { width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; }
-  h1 { font-size:25pt; font-weight:800; letter-spacing:-0.02em; line-height:1.1; margin:0 0 6px; }
-  h2 { font-size:15pt; font-weight:700; letter-spacing:-0.01em; margin:26px 0 8px; padding-top:6px; }
-  h3 { font-size:12pt; font-weight:700; margin:18px 0 6px; }
-  h2 { border-top:1px solid var(--line); }
+  h1 { font-size:24pt; font-weight:800; letter-spacing:-0.01em; line-height:1.12; margin:0 0 6px; }
+  h2 { font-size:14.5pt; font-weight:700; letter-spacing:-0.01em; margin:26px 0 8px; padding-top:8px; border-top:1px solid var(--line); }
+  h3 { font-size:11.5pt; font-weight:700; margin:18px 0 6px; }
   p { margin:0 0 10px; }
   a { color:var(--accent); text-decoration:none; }
   strong { font-weight:700; }
   em { font-style:italic; }
-  blockquote { margin:14px 0; padding:6px 0 6px 16px; border-left:3px solid var(--accent); color:var(--muted); font-style:italic; font-family:'Instrument Serif',Georgia,serif; font-size:13pt; }
+  blockquote { margin:14px 0; padding:6px 0 6px 16px; border-left:3px solid var(--accent); color:var(--muted); font-style:italic; font-family:'Newsreader',Georgia,serif; font-size:12.5pt; }
   ul, ol { margin:0 0 12px; padding-left:20px; }
   li { margin:3px 0; }
-  code { font-family:'IBM Plex Mono',monospace; font-size:9pt; background:#f4f1ea; padding:1px 5px; border-radius:4px; }
-  pre { background:#f4f1ea; padding:12px 14px; border-radius:8px; overflow:auto; }
+  code { font-family:'IBM Plex Mono',monospace; font-size:9pt; background:#f2efe7; padding:1px 5px; border-radius:3px; }
+  pre { background:#f2efe7; padding:12px 14px; border-radius:4px; overflow:auto; }
   pre code { background:none; padding:0; }
   table { width:100%; border-collapse:collapse; margin:12px 0; font-size:9.6pt; }
   th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
-  th { background:#f4f1ea; font-weight:700; }
+  th { background:#f2efe7; font-weight:700; }
   hr { border:none; border-top:1px solid var(--line); margin:22px 0; }
   h1, h2, h3 { break-after:avoid; }
   table, blockquote, pre { break-inside:avoid; }
-  .page-break { break-before:page; }
 `;
 
-function htmlDoc(title, bodies) {
-  const inner = bodies.join('\n<div class="page-break"></div>\n');
+function htmlDoc(title, body) {
   return `<!doctype html><html><head><meta charset="utf-8">
   <title>${title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400..600&display=swap" rel="stylesheet">
   <style>${PRINT_CSS}</style></head>
-  <body><div class="brand"><span class="bdot"></span> F. Aamir Ali · faamirali.com · Case study</div>${inner}</body></html>`;
+  <body><div class="brand"><span class="bdot"></span> F. Aamir Ali · faamirali.com · Case study</div>${body}</body></html>`;
 }
 
 const docs = [
   {
-    out: 'fleetbot-case-study.pdf',
-    title: 'FleetBot — Case Study',
-    sources: [
-      { path: studentPath, filters: { blocks: ['What I could still add'] } },
-      { path: staffPath, filters: { blocks: ['What would make it even stronger'] } },
-    ],
+    out: 'fleetbot-student-case-study.pdf',
+    title: 'FleetBot (Student) — Case Study',
+    path: `${SRC}/FleetBot (Student)/FleetBot Student Case Study_f.md`,
+  },
+  {
+    out: 'fleetbot-staff-case-study.pdf',
+    title: 'FleetBot (Staff) — Case Study',
+    path: `${SRC}/FleetBot (Staff)/FleetBot Staff Case Study_f.md`,
   },
   {
     out: 'surrey-ai-summit-case-study.pdf',
     title: 'Surrey Youth AI Summit — Case Study',
-    sources: [
-      {
-        path: syaisPath,
-        filters: {
-          lines: ['Set things up with Generation AI to', 'both of us want to run it again', 'The relationship is the long game'],
-          blocks: ["Stuff worth grabbing while it's fresh"],
-        },
-      },
-    ],
+    path: `${SRC}/SYAIS/SYAIS Case Study_f.md`,
   },
   {
     out: 'ai-club-case-study.pdf',
     title: 'AI & Innovation Club — Case Study',
-    sources: [
-      {
-        path: clubPath,
-        filters: {
-          sections: ['Making sure it survives after me'],
-          blocks: ['worth grabbing to make it stronger'],
-          lines: ['Building an exec selection and handover process'],
-          replacements: [
-            ['16 active members', '20 active members'],
-            ['all 16 members', 'all 20 members'],
-            ['(the number of people in our group photo)', '(active, hands-on members)'],
-          ],
-        },
-      },
-    ],
+    path: `${SRC}/AI Club/AI Club Case Study_f.md`,
+    // Club count is 20 everywhere (locked decision, letter-backed) —
+    // aligns the one stray "12" in the source's Results section.
+    replacements: [['12 active members', '20 active members']],
   },
 ];
 
@@ -138,12 +90,9 @@ await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
 try {
   for (const doc of docs) {
-    const bodies = [];
-    for (const s of doc.sources) {
-      const md = await readFile(s.path, 'utf8');
-      bodies.push(marked.parse(filterMd(md, s.filters)));
-    }
-    const html = htmlDoc(doc.title, bodies);
+    const md = await readFile(doc.path, 'utf8');
+    const body = marked.parse(applyReplacements(md, doc.replacements));
+    const html = htmlDoc(doc.title, body);
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle' });
     await page.pdf({

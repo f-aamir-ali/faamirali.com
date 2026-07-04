@@ -7,7 +7,7 @@ import { SITE_URL, profilePageJsonLd } from '../data/site.js';
 
 const title = 'F. Aamir Ali — Builder & Founder';
 const description =
-  'F. Aamir Ali is a student builder and founder from Surrey, BC. He built and deployed an AI assistant in his 1,500-student high school and founded the Surrey Youth AI Summit.';
+  'F. Aamir Ali is a student builder and founder from Surrey, BC. He built and deployed an AI assistant in his 1,500-student high school and planned and executed the first youth AI summit in Surrey.';
 ---
 <Base
   title={title}
@@ -27,12 +27,12 @@ const description =
         </div>
         <h1 class="hero-title">
           <span class="t1">Aamir</span>
-          <span class="t2 serif">Ali<span class="accent">.</span></span>
+          <span class="t2">Ali<span class="accent">.</span></span>
         </h1>
-        <p class="hero-line">I find hard problems and turn them into things that work.</p>
+        <p class="hero-line">I turn ideas into deployed real-world things.</p>
         <div class="hero-cta">
-          <a class="btn btn-dark" href="#work">See the work <span aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="/about">Read the story</a>
+          <a class="btn btn-dark" href="#work">See my work <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="/about">Read my story</a>
         </div>
       </div>
       <div class="hero-right">
@@ -41,17 +41,17 @@ const description =
     </div>
   </section>
 
-  <!-- Selected work -->
+  <!-- Selected work — the index -->
   <section id="work" class="section">
     <div class="wrap">
       <div class="work-head">
         <div>
           <div class="eyebrow" style="margin-bottom:14px;">Selected work — 2025–2026</div>
-          <h2 class="work-title">Things I’ve <span class="serif">built &amp; shipped.</span></h2>
+          <h2 class="work-title">Built &amp; <span class="serif">shipped.</span></h2>
         </div>
-        <p class="work-sub">Real, deployed work — not concepts. Each opens the full story, proof, and links.</p>
+        <p class="work-sub">Real, deployed work — not concepts. Every number below traces to a document, a dashboard, or a letter.</p>
       </div>
-      <div class="work-list">
+      <div class="work-grid">
         {projects.map((p) => <ProjectRow project={p} />)}
       </div>
     </div>
@@ -60,7 +60,7 @@ const description =
   <!-- Recommendation -->
   <section class="rec section">
     <div class="rec-inner">
-      <div class="eyebrow" style="margin-bottom:28px;">Recommendation letter</div>
+      <div class="eyebrow rec-eyebrow">Recommendation letter</div>
       <p class="rec-quote serif">“His initiative and technical sophistication are exceptional at the secondary level.”</p>
       <div class="rec-attr"><span class="rec-line"></span>Jodie Perry, Principal, Fleetwood Park Secondary</div>
     </div>
@@ -68,28 +68,45 @@ const description =
 </Base>
 
 <style>
-  .hero { padding-top: 30px; padding-bottom: 70px; }
+  .hero { padding-top: 118px; padding-bottom: 70px; }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 56px; align-items: center; }
   .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-  .hero-title { line-height: 0.9; letter-spacing: -0.035em; margin-bottom: 26px; }
-  .hero-title .t1 { display: block; font-weight: 800; font-size: clamp(54px, 8.6vw, 116px); }
-  .hero-title .t2 { display: block; font-size: clamp(60px, 9.4vw, 128px); }
+  /* Masthead treatment — condensed caps, set like a file cover. */
+  .hero-title { line-height: 0.9; letter-spacing: -0.01em; margin-bottom: 26px; text-transform: uppercase; font-stretch: 82%; }
+  .hero-title .t1 { display: block; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
+  .hero-title .t2 { display: block; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
   .hero-line { font-size: clamp(17px, 2vw, 21px); color: var(--muted-2); max-width: 30ch; margin-bottom: 34px; line-height: 1.4; }
   .hero-cta { display: flex; gap: 13px; flex-wrap: wrap; }
 
   .work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 34px; }
-  .work-title { font-size: clamp(32px, 4.4vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
-  .work-sub { max-width: 30ch; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
-  .work-list { display: flex; flex-direction: column; gap: 14px; }
+  .work-title { font-size: clamp(32px, 4.4vw, 52px); font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .work-sub { max-width: 34ch; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
+  .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
 
   .rec { padding-top: 90px; padding-bottom: 80px; }
   .rec-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+  /* Bigger + bolder than a normal eyebrow — it needs to read clearly as a
+     section label ("this is someone else's words") before the quote itself,
+     so the pull-quote doesn't land as self-praise. */
+  .rec-eyebrow { font-size: 15px; font-weight: 700; letter-spacing: 0.14em; color: var(--ink); margin-bottom: 28px; }
   .rec-quote { font-size: clamp(28px, 4.2vw, 50px); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 26px; }
   .rec-attr { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
-  .rec-line { width: 26px; height: 1px; background: rgba(26, 24, 19, 0.3); }
+  .rec-line { width: 26px; height: 1px; background: rgba(28, 26, 20, 0.3); }
 
   @media (max-width: 860px) {
     .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-    .hero-right { max-width: 360px; }
+    .hero-right { max-width: 100%; }
+    /* The 30ch cap exists to force a deliberate break in the narrow desktop
+       two-column layout — once stacked, the column is much wider, so let it
+       use the space instead of wrapping for no reason. */
+    .hero-line { max-width: none; }
+    .work-sub { max-width: none; }
+    .work-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .hero { padding-top: 94px; }
+  }
+  @media (max-width: 600px) {
+    .work-grid { grid-template-columns: 1fr; }
   }
 </style>

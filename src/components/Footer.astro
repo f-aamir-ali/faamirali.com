@@ -1,25 +1,24 @@
 ---
 import { EMAIL, INSTAGRAM, LINKEDIN } from '../data/site.js';
 ---
-<footer class="site-footer">
+<footer class="site-footer" id="contact">
   <div class="wrap">
     <div class="f-top">
-      <h2 class="cta-head">Building where AI meets a real institution? <span class="serif">I'd like to talk.</span></h2>
-      <div class="f-links">
-        <a class="f-pill f-pill--solid" href={`mailto:${EMAIL}`}>Email</a>
-        {LINKEDIN
-          ? <a class="f-pill" href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          : <span class="f-pill is-soon" title="LinkedIn — coming soon" aria-disabled="true">LinkedIn</span>}
-        <a class="f-pill" href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a>
+      <h2 class="cta-head">Got an idea worth building? <span class="serif">I’d like to talk.</span></h2>
+      <div class="f-contact">
+        <span class="eyebrow f-contact-label">Contact me</span>
+        <div class="f-links">
+          <a class="f-pill f-pill--solid" href={`mailto:${EMAIL}`}>Email</a>
+          {LINKEDIN && (
+            <a class="f-pill" href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          )}
+          <a class="f-pill" href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
       </div>
     </div>
     <div class="f-bottom">
-      <div class="who">
-        <span class="dot"></span>
-        <span class="who-name">F. Aamir Ali</span>
-        <span class="who-meta">· Builder &amp; founder · Surrey, BC</span>
-      </div>
-      <span class="copy">© 2026 — built, not templated</span>
+      <span class="who-name">F. Aamir Ali</span>
+      <span class="copy">Builder &amp; Founder · Surrey, BC · © 2026</span>
     </div>
   </div>
 </footer>
@@ -33,23 +32,36 @@ import { EMAIL, INSTAGRAM, LINKEDIN } from '../data/site.js';
     display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap;
     padding-bottom: 46px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
-  .cta-head { font-size: clamp(28px, 4vw, 46px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; max-width: 18ch; }
-  .cta-head .serif { color: #f1ede5; }
-  .f-links { display: flex; gap: 11px; flex-wrap: wrap; }
+  .cta-head { font-size: clamp(28px, 4vw, 46px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.08; max-width: 18ch; }
+  .cta-head .serif { color: var(--dark-text); font-weight: 450; }
+
+  .f-contact { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+  .f-contact-label { color: var(--dark-muted); }
+
+  .f-links { display: flex; gap: 11px; flex-wrap: wrap; justify-content: flex-end; }
   .f-pill {
-    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase;
-    color: var(--dark-text); text-decoration: none; padding: 13px 22px; border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.22); transition: background .2s ease;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--dark-text); text-decoration: none; padding: 13px 22px; border-radius: var(--r-pill);
+    border: 1px solid rgba(255, 255, 255, 0.22); transition: background .2s ease, border-color .2s ease;
   }
-  .f-pill:hover { background: rgba(255, 255, 255, 0.08); }
+  .f-pill:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.4); }
   .f-pill--solid { color: var(--dark); background: var(--dark-text); border-color: transparent; }
   .f-pill--solid:hover { background: #fff; }
-  .f-pill.is-soon { opacity: 0.45; cursor: default; }
+
   .f-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-top: 26px; }
-  .who { display: flex; align-items: center; gap: 11px; }
   .who-name { font-weight: 700; font-size: 14px; }
-  .who-meta { font-family: var(--font-mono); font-size: 12px; color: var(--dark-muted); }
-  .copy { font-family: var(--font-mono); font-size: 12px; color: var(--dark-muted); }
+  .copy { font-family: var(--font-mono); font-size: 11.5px; color: var(--dark-muted); }
+
+  /* Below this, .f-top's two halves are narrow enough to fit on one line
+     without wrapping (flex-wrap only kicks in when content overflows) —
+     forcing a real column stack here instead of relying on wrap avoids the
+     cramped side-by-side squeeze that showed up on narrower/portrait
+     viewports. */
+  @media (max-width: 860px) {
+    .f-top { flex-direction: column; align-items: flex-start; }
+    .f-contact { align-items: flex-start; width: 100%; }
+    .f-links { justify-content: flex-start; }
+  }
 
   @media (max-width: 760px) {
     .site-footer { padding: 48px 20px 28px; border-radius: 32px 32px 0 0; }

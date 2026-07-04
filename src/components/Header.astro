@@ -1,70 +1,214 @@
 ---
-import { EMAIL } from '../data/site.js';
----
-<header class="site-header" id="site-header">
-  <div class="pill">
-    <a href="/" class="brand" aria-label="F. Aamir Ali — home">
-      <span class="dot"></span>
-      <span class="brand-name">F. Aamir Ali</span>
+<header class="site-header" id="site-header" transition:persist>
+  <div class="header-inner">
+    <a href="/" class="brand-pill" id="logo-pill" aria-label="F. Aamir Ali — back to top">
+      <span class="logo-text">Aamir Ali</span>
     </a>
-    <nav class="nav" aria-label="Primary">
-      <a href="/#work" class="nav-link">Work</a>
+
+    <nav class="nav-pill" aria-label="Primary">
+      <div class="nav-item">
+        <a href="/#work" class="nav-link">Work</a>
+        <div class="dropdown-bridge">
+          <div class="dropdown" role="menu">
+            <a href="/work/fleetbot" class="dropdown-link" role="menuitem">FleetBot</a>
+            <a href="/work/surrey-ai-summit" class="dropdown-link" role="menuitem">Surrey Youth AI Summit</a>
+            <a href="/work/ai-club" class="dropdown-link" role="menuitem">AI &amp; Innovation Club</a>
+          </div>
+        </div>
+      </div>
       <a href="/about" class="nav-link">About</a>
+      <a href="/honours" class="nav-link">Honours</a>
+      <a href="#contact" id="contact-link" class="cta">Contact</a>
     </nav>
-    <a href={`mailto:${EMAIL}`} class="cta">Get in touch</a>
   </div>
 </header>
 
 <style>
-  .site-header { position: sticky; top: 0; z-index: 50; padding: 16px 22px; }
-  .pill {
-    max-width: var(--maxw); margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 18px;
-    padding: 9px 9px 9px 22px; border-radius: 999px;
-    background: rgba(251, 249, 244, 0.72);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
-    backdrop-filter: blur(18px) saturate(150%);
-    border: 1px solid rgba(26, 24, 19, 0.09);
-    box-shadow: 0 10px 34px rgba(26, 24, 19, 0.07);
-    transition: background .3s ease, box-shadow .3s ease, border-color .3s ease;
+  /* Always fixed + visible: it lives at the top of the hero from the start
+     (embedded — transparent, no box) and only gains the glass "pill" chrome
+     once the page is scrolled (detached — floating). Glass is scoped to the
+     header only, per the design spec. */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 26px 34px;
   }
-  /* PROMPT VF behaviour: the pill firms up once the page is scrolled */
-  .site-header.scrolled .pill {
-    background: rgba(251, 249, 244, 0.92);
-    box-shadow: 0 12px 40px rgba(26, 24, 19, 0.13);
-    border-color: rgba(26, 24, 19, 0.14);
+  .header-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: var(--ink); }
-  .brand-name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
-  .nav { display: flex; align-items: center; gap: 30px; }
+
+  .brand-pill,
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    height: 54px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform: translateY(0);
+    transition: background .45s ease, border-color .45s ease, box-shadow .45s ease,
+      backdrop-filter .45s ease, transform .45s ease;
+  }
+
+  .brand-pill {
+    justify-content: center;
+    padding: 0 22px;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .logo-text { font-family: var(--font-sans); font-weight: 700; font-size: 15px; letter-spacing: 0.01em; white-space: nowrap; }
+
+  .nav-pill { gap: 24px; padding: 0 8px 0 22px; }
+  .nav-item { position: relative; display: flex; align-items: center; height: 100%; }
   .nav-link {
-    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: var(--font-mono); font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--muted-2); text-decoration: none; transition: color .2s ease;
   }
-  .nav-link:hover { color: var(--ink); }
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
   .cta {
-    font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-    color: #fdf4f0; text-decoration: none; padding: 12px 20px; border-radius: 999px; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; box-sizing: border-box;
+    font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #f2f6f1; text-decoration: none; padding: 0 20px; border-radius: 999px; background: var(--accent);
     transition: background .2s ease;
   }
   .cta:hover { background: var(--accent-hover); }
 
-  @media (max-width: 600px) {
-    .site-header { padding: 12px 14px; }
-    .pill { padding: 8px 8px 8px 16px; gap: 10px; }
-    .nav { gap: 18px; }
-    .cta { padding: 11px 15px; }
+  /* "Work" hover dropdown — quick links to the three project pages.
+     The bridge sits flush against the nav-item (no gap) and carries the
+     visual gap as padding-top instead, so the mouse never crosses a "dead"
+     zone that isn't part of the hoverable chain. A short delay on the close
+     transition gives extra room for a slightly slow cursor. */
+  .dropdown-bridge {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    padding-top: 14px;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease, visibility 0s linear .3s;
   }
-  @media (max-width: 430px) {
-    .brand-name { display: none; }
-    .nav { gap: 14px; }
-    .nav-link { font-size: 12px; }
+  .nav-item:hover .dropdown-bridge,
+  .nav-item:focus-within .dropdown-bridge {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity .15s ease, visibility 0s linear 0s;
+  }
+  .dropdown {
+    min-width: 220px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 20px;
+    background: rgba(250, 248, 242, 0.88);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: none;
+    box-shadow:
+      inset 2px 2px 2px rgba(255, 255, 255, 0.55),
+      inset -2px -2px 2px rgba(28, 26, 20, 0.14),
+      0 16px 36px rgba(28, 26, 20, 0.14);
+    transform: translateY(6px);
+    transition: transform .18s ease;
+  }
+  .nav-item:hover .dropdown,
+  .nav-item:focus-within .dropdown {
+    transform: translateY(0);
+  }
+  .dropdown-link {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted-2); text-decoration: none; white-space: nowrap;
+    padding: 11px 14px; border-radius: 12px;
+    transition: color .2s ease, background .2s ease;
+  }
+  .dropdown-link:hover,
+  .dropdown-link:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: rgba(74, 47, 29, 0.07);
+  }
+
+  /* Detached state — added by scroll listener below.
+     Liquid-glass treatment: no border; the edge is defined by a bright
+     top-left inset highlight and a darker bottom-right inset, tinted to
+     the site's ink color so it stays on-brand on a light canvas. */
+  .site-header.detached .brand-pill,
+  .site-header.detached .nav-pill {
+    background: rgba(250, 248, 242, 0.5);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    box-shadow:
+      inset 1.5px 1.5px 1.5px rgba(255, 255, 255, 0.6),
+      inset -1.5px -1.5px 1.5px rgba(28, 26, 20, 0.12),
+      0 10px 28px rgba(28, 26, 20, 0.1);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 760px) {
+    .site-header { padding: 18px 20px; }
+    .brand-pill, .nav-pill { height: 46px; }
+    .nav-pill { gap: 12px; padding: 0 6px 0 16px; }
+    .brand-pill { padding: 0 16px; }
+    .nav-link { font-size: 11px; }
+    .logo-text { font-size: 12.5px; }
+    .cta { height: 32px; padding: 0 15px; }
+    .dropdown { min-width: 190px; }
+  }
+  @media (max-width: 380px) {
+    .nav-pill { gap: 10px; }
   }
 </style>
 
 <script>
-  const h = document.getElementById('site-header');
-  const onScroll = () => { if (h) h.classList.toggle('scrolled', window.scrollY > 10); };
+  const header = document.getElementById('site-header');
+  const logo = document.getElementById('logo-pill');
+  const contactLink = document.getElementById('contact-link');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const onScroll = () => {
+    if (header) header.classList.toggle('detached', window.scrollY > 24);
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  logo?.addEventListener('click', (e) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    }
+  });
+
+  // The footer (with id="contact") is present on every page, so this is
+  // always an in-page jump — but Astro's ClientRouter intercepts hash links
+  // as page transitions and resets scroll to top. Scroll manually instead.
+  contactLink?.addEventListener('click', (e) => {
+    const target = document.getElementById('contact');
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+      history.pushState(null, '', '#contact');
+    }
+  });
 </script>
