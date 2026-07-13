@@ -29,12 +29,12 @@ function wrap(text, maxChars) {
 }
 
 const pages = [
-  { file: 'home', eyebrow: 'BUILDER & FOUNDER · SURREY, BC', title: 'F. Aamir Ali', sub: 'I turn ideas into deployed real-world things.' },
-  { file: 'default', eyebrow: 'BUILDER & FOUNDER · SURREY, BC', title: 'F. Aamir Ali', sub: 'I turn ideas into deployed real-world things.' },
-  { file: 'about', eyebrow: 'ABOUT · F. AAMIR ALI', title: 'The story.', sub: 'Builder & founder from Surrey, BC — the full record.' },
+  { file: 'home', eyebrow: 'BUILDER & FOUNDER · SURREY, BC', title: 'F. Aamir Ali', sub: 'I turn ideas into real, deployed things that people actually use.' },
+  { file: 'default', eyebrow: 'BUILDER & FOUNDER · SURREY, BC', title: 'F. Aamir Ali', sub: 'I turn ideas into real, deployed things that people actually use.' },
+  { file: 'about', eyebrow: 'ABOUT · F. AAMIR ALI', title: 'The story.', sub: 'Builder & founder from Surrey, BC: the full record.' },
   { file: 'fleetbot', eyebrow: 'F. AAMIR ALI · WORK', title: 'FleetBot', sub: 'Two AI assistants deployed in a 1,500-student school.' },
-  { file: 'surrey-ai-summit', eyebrow: 'F. AAMIR ALI · WORK', title: 'Surrey Youth AI Summit', sub: '~70 students. 14 schools. One day building real AI.' },
-  { file: 'ai-club', eyebrow: 'F. AAMIR ALI · WORK', title: 'AI & Innovation Club', sub: 'Teaching students to build with AI — a real build every meeting.' },
+  { file: 'surrey-ai-summit', eyebrow: 'F. AAMIR ALI · WORK', title: 'Surrey Youth AI Summit', sub: 'About 70 students. 14 schools. One day building real AI.' },
+  { file: 'ai-club', eyebrow: 'F. AAMIR ALI · WORK', title: 'AI & Innovation Club', sub: 'Teaching students to build with AI: a real build every meeting.' },
   { file: 'honours', eyebrow: 'F. AAMIR ALI · HONOURS', title: 'Honours', sub: "A recommendation letter, certificates, and scholarship wins." },
 ];
 

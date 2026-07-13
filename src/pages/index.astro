@@ -5,7 +5,7 @@ import ProjectRow from '../components/ProjectRow.astro';
 import { projects } from '../data/projects.js';
 import { SITE_URL, profilePageJsonLd } from '../data/site.js';
 
-const title = 'F. Aamir Ali — Builder & Founder';
+const title = 'F. Aamir Ali | Builder & Founder';
 const description =
   'F. Aamir Ali is a student builder and founder from Surrey, BC. He built and deployed an AI assistant in his 1,500-student high school and planned and executed the first youth AI summit in Surrey.';
 ---
@@ -23,20 +23,20 @@ const description =
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="dot"></span>
-          <span class="eyebrow">Builder &amp; founder — Surrey, BC</span>
+          <span class="eyebrow">Builder &amp; founder · Surrey, BC</span>
         </div>
         <h1 class="hero-title">
           <span class="t1">Aamir</span>
           <span class="t2">Ali<span class="accent">.</span></span>
         </h1>
-        <p class="hero-line">I turn ideas into deployed real-world things.</p>
+        <p class="hero-line">I turn ideas into real, deployed things that people actually use.</p>
         <div class="hero-cta">
           <a class="btn btn-dark" href="#work">See my work <span aria-hidden="true">→</span></a>
           <a class="btn btn-ghost" href="/about">Read my story</a>
         </div>
       </div>
       <div class="hero-right">
-        <Placeholder label="headshot.jpg" sub="real photo — drop in" ratio="4 / 5" corner="F.A.A." />
+        <Placeholder label="headshot.jpg" sub="real photo · coming soon" ratio="4 / 5" corner="F.A.A." />
       </div>
     </div>
   </section>
@@ -46,10 +46,10 @@ const description =
     <div class="wrap">
       <div class="work-head">
         <div>
-          <div class="eyebrow" style="margin-bottom:14px;">Selected work — 2025–2026</div>
+          <div class="eyebrow" style="margin-bottom:14px;">Selected work · 2025–2026</div>
           <h2 class="work-title">Built &amp; <span class="serif">shipped.</span></h2>
         </div>
-        <p class="work-sub">Real, deployed work — not concepts. Every number below traces to a document, a dashboard, or a letter.</p>
+        <p class="work-sub">Real, deployed work, not concepts. Every number below traces back to a document, a dashboard, or a letter.</p>
       </div>
       <div class="work-grid">
         {projects.map((p) => <ProjectRow project={p} />)}

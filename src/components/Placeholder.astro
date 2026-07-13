@@ -3,7 +3,7 @@
 // is dropped in. Pure CSS (no <img>), so there are no broken-image links.
 // The file-label caption style is deliberate — it's the site's documentation
 // vernacular; keep the same voice in real captions once assets land.
-const { label, sub = 'real photo — drop in', video = false, ratio = '4 / 5', corner } = Astro.props;
+const { label, sub = 'real photo · coming soon', video = false, ratio = '4 / 5', corner } = Astro.props;
 ---
 <div class="ph" style={`aspect-ratio:${ratio}`}>
   {video && <div class="ph-play" aria-hidden="true">▶</div>}

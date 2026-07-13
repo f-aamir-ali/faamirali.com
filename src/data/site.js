@@ -8,7 +8,7 @@ export const LINKEDIN = '';
 // Keep this string IDENTICAL everywhere (schema, llms.txt, /about lead).
 // Sameness makes AI converge on one accurate description.
 export const CANONICAL_DESCRIPTION =
-  "F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school — recognized by the school's principal as the first student-built system of its kind there — and planned and executed the first youth AI summit in Surrey, which brought ~70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.";
+  "F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school, a system his principal recognized as the first of its kind built by a student there, and he planned and executed the first youth AI summit in Surrey, bringing about 70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.";
 
 export const PERSON_ID = `${SITE_URL}/#person`;
 
