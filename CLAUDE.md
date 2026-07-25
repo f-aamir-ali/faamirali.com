@@ -10,7 +10,7 @@ The personal site & long-term hub of **F. Aamir Ali** — builder & founder, Gra
 
 **⛔ Old-case-study guard:** if a case-study file contains "70% of the whole thing myself", "smallest of my projects", or "least flashy thing", it is a RETIRED old version — stop and tell the owner. Only the `*_f.md` files are valid sources.
 
-The non-negotiable technical constraint driving every decision: **all page text must be static server-rendered HTML, never injected client-side.** This serves two goals simultaneously — page-load speed, and readability by AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc. often don't execute JS). Never add a framework, a client-side data-fetch, or a JS-rendered content block. The only client JS on the entire site is `ClientRouter` (page transitions) and two tiny inline scripts in `Header.astro` (scroll-detach + smooth-scroll-to-contact).
+The non-negotiable technical constraint driving every decision: **all page text must be static server-rendered HTML, never injected client-side.** This serves two goals simultaneously — page-load speed, and readability by AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc. often don't execute JS). Never add a framework, a client-side data-fetch, or a JS-rendered content block. The client JS on the site is `ClientRouter` (page transitions), two tiny inline scripts in `Header.astro` (scroll-detach + smooth-scroll-to-contact), and the GA4 tag in `Base.astro` (analytics beacon only, renders nothing, production-build-only — see the Analytics section below). None of these render page content, so the AI-crawler guarantee holds.
 
 ## Commands
 
@@ -383,7 +383,7 @@ Lives partly as static files in `public/` (`robots.txt` allow-lists AI crawlers;
 **Whenever a new page is added, update all of these in lockstep** (this is the full checklist, don't do a partial job):
 1. `src/components/Header.astro` — nav link (and dropdown link if it's a project)
 2. `src/pages/404.astro` — add it to the `nf-links` list
-3. `public/sitemap.xml` — new `<url>` entry with today's date as `lastmod`
+3. `src/pages/sitemap.xml.js` — standalone pages need one line in the `entries` array (projects and case studies appear automatically, see below)
 4. `public/llms.txt` — new bullet under `## Pages`
 5. `scripts/make-og.mjs` — new entry in the `pages` array, then run `npm run make:og`
 6. This file's route count (`npm run build` output and the two mentions of "11 routes" above)
@@ -394,6 +394,26 @@ project or case study appears in it automatically (and its `lastmod` comes from
 that entry's real `updated` date, not from whenever someone last remembered to
 touch a static file). A brand-new *standalone* page still needs one line added
 to that endpoint's `entries` array.
+
+## Analytics
+
+**Google Analytics 4** (`gtag.js`), not Vercel Analytics — Vercel's Hobby-tier
+analytics only retains 3 months of data, useless for a site whose whole point
+is a long-term record. GA4's ID lives in `src/data/site.js`
+(`GA_MEASUREMENT_ID`), the tag itself is inlined at the top of `<head>` in
+`Base.astro`, and it's gated on `import.meta.env.PROD` so local `astro dev` /
+`astro preview` browsing never inflates real numbers — only an actual Vercel
+production build fires it. It's a fire-and-forget beacon script that renders
+no page content, so it doesn't touch the static-HTML/AI-crawler guarantee
+above; it's still counted in the "client JS on this site" inventory for
+completeness, not because it's a risk to that guarantee.
+
+**Google Search Console** is verified as a **Domain property**
+(`faamirali.com`), which covers every subdomain and protocol automatically —
+`www.faamirali.com` included. The apex-vs-`www` redirect direction (see
+`vercel.json` / Vercel's Domains settings) has no effect on Search Console
+coverage; don't re-verify a second property if that redirect direction ever
+changes.
 
 ## Security / cleanup already done — don't reintroduce
 

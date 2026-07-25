@@ -7,6 +7,10 @@ export const SUMMIT_SITE = 'https://surreyaisummit.vercel.app';
 // Placeholder — drop in the real profile URL once the LinkedIn exists.
 export const LINKEDIN = '';
 
+// Google Analytics 4 measurement ID. Loaded only in production builds (see
+// Base.astro) so local dev/preview traffic never pollutes real numbers.
+export const GA_MEASUREMENT_ID = 'G-7V3W6JLX4F';
+
 // Keep this string IDENTICAL everywhere (schema, llms.txt, /about lead).
 // Sameness makes AI converge on one accurate description.
 export const CANONICAL_DESCRIPTION =
