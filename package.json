@@ -8,13 +8,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "make:pdfs": "node scripts/make-pdfs.mjs",
-    "make:og": "node scripts/make-og.mjs"
+    "make:og": "node scripts/make-og.mjs",
+    "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
-    "astro": "^7.0.6"
+    "astro": "^7.0.6",
+    "marked": "^18.0.5"
   },
   "devDependencies": {
-    "marked": "^18.0.5",
     "playwright": "^1.61.1",
     "sharp": "^0.35.2"
   }

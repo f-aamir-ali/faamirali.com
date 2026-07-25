@@ -1,87 +1,224 @@
 ---
-// The proof section — a fluid bento grid, not a locked table. Tiles size
-// themselves to what they hold: small stat cards, larger media tiles, wide
-// quote/highlight tiles. Columns use auto-fill and rows a fixed base unit
-// with per-tile spans, so it packs tightly (no vertical voids) and reflows
-// on its own for phone, tablet, and desktop — never a fixed, symmetrical
-// grid. Media tiles are landscape boxes with overflow hidden; a real photo
-// or video dropped in should use `width/height:100%; object-fit:cover`, so
-// it fills the tile by cropping — it never stretches or distorts.
+// The proof section. Each group renders as two aligned bands:
+//
+//   1. `.bento`     — the fluid stat/action grid. Fixed 78px row unit with
+//                     per-tile row spans and `dense` packing, so it stays
+//                     tight and reflows per viewport with no breakpoints.
+//   2. `.media-row` — photos, video and multi-slide posts. Deliberately NOT
+//                     in the bento: the bento's fixed row unit forces every
+//                     asset into the same ~1.77 box, which crops a 4:3 photo
+//                     and leaves dead space under it. Here each item is sized
+//                     to its OWN measured `ratio` at a shared row height, so
+//                     nothing is cropped or stretched and the row's tops line
+//                     up like a filmstrip.
+//
+// Two render modes, same tile vocabulary:
+//   • flat (default)  — one band pair holding everything, for single-arc projects.
+//   • grouped         — set `proofGroups` and tag items with a matching `group`,
+//                       and each group gets its own labelled band pair. Untagged
+//                       items fall to a final unlabelled one (the shared tiles).
+// Group `tone` is a TINT OF THE SINGLE SITE ACCENT, never a second hue.
+import Carousel from './Carousel.astro';
+
 const { proj } = Astro.props;
-const media = [proj.media, proj.media2].filter(Boolean);
+
+const allMedia = [proj.media, proj.media2].filter(Boolean);
+const groups = proj.proofGroups ?? null;
+const grouped = Boolean(groups);
+const tagged = (arr, key) => (arr ?? []).filter((x) => (x.group ?? null) === key);
+
+// A media item's box is its true aspect ratio; fall back to 4:3 (the shape of
+// every real photo in this project) rather than guessing something wider.
+const ratioOf = (m) => m.ratio ?? '4 / 3';
+// The post's width is derived from the shared row height so its slide window
+// lands at exactly that height, keeping it aligned with the media beside it.
+const arNumber = (aspect = '4 / 5') => {
+  const [w, h] = String(aspect).split('/').map((n) => parseFloat(n.trim()));
+  return w && h ? +(w / h).toFixed(4) : 0.8;
+};
+
+const section = (key, meta = {}, extras = {}) => ({
+  label: meta.label ?? null,
+  kicker: meta.kicker ?? null,
+  tone: meta.tone ?? 'light',
+  stats: tagged(proj.ledger, key),
+  pdfs: tagged(proj.pdfs, key),
+  media: tagged(allMedia, key),
+  carousel: proj.carousel && (proj.carousel.group ?? null) === key ? proj.carousel : null,
+  live: proj.live && (proj.live.group ?? null) === key ? proj.live : null,
+  quote: null,
+  highlight: null,
+  ...extras,
+});
+
+let sections;
+if (groups) {
+  sections = groups.map((g) => section(g.key, g));
+  sections.push(section(null, {}, { quote: proj.quote ?? null, highlight: proj.note ?? null }));
+} else {
+  sections = [
+    {
+      label: null,
+      kicker: null,
+      tone: 'light',
+      stats: proj.ledger ?? [],
+      pdfs: proj.pdfs ?? [],
+      media: allMedia,
+      carousel: proj.carousel ?? null,
+      live: proj.live ?? null,
+      quote: proj.quote ?? null,
+      highlight: proj.note ?? null,
+    },
+  ];
+}
+
+const hasBento = (s) =>
+  s.stats.length > 0 || s.pdfs.length > 0 || Boolean(s.live) || Boolean(s.quote) || Boolean(s.highlight);
+const hasMedia = (s) => s.media.length > 0 || Boolean(s.carousel);
+
+sections = sections.filter((s) => hasBento(s) || hasMedia(s));
 ---
-<div class="bento">
-  {proj.ledger.map((row, i) => (
-    <div class:list={['tile', 'stat', i === 0 && 'stat--lead']}>
-      <div class="stat-n">{row.n}</div>
-      <div class="stat-l">{row.l}</div>
-      {row.src && <div class="stat-src">per {row.src}</div>}
-    </div>
-  ))}
+{sections.map((sec) => (
+  <section class:list={['proof-sec', `tone-${sec.tone}`, grouped && 'grouped']}>
+    {sec.label && (
+      <div class="sec-head">
+        <span class="sec-label">{sec.label}</span>
+        {sec.kicker && <span class="sec-kicker">{sec.kicker}</span>}
+        <span class="sec-rule"></span>
+      </div>
+    )}
 
-  {proj.live.href ? (
-    <a class="tile action action--dark" href={proj.live.href} target="_blank" rel="noopener noreferrer">
-      <span class="act-note">{proj.live.note}</span>
-      <span class="act-main">{proj.live.label} →</span>
-    </a>
-  ) : (
-    <div class="tile action action--dark is-soon">
-      <span class="act-note">{proj.live.note} · coming soon</span>
-      <span class="act-main">{proj.live.label} →</span>
-    </div>
-  )}
+    {hasBento(sec) && (
+      <div class="bento">
+        {sec.stats.map((row, i) => (
+          <div class:list={['tile', 'stat', i === 0 && 'stat--lead']}>
+            <div class="stat-n">{row.n}</div>
+            <div class="stat-l">{row.l}</div>
+            {row.src && <div class="stat-src">per {row.src}</div>}
+          </div>
+        ))}
 
-  {proj.pdfs.map((pdf) => (
-    <a class="tile action action--light" href={pdf.href} target="_blank" rel="noopener noreferrer">
-      <span class="act-note">{pdf.label}</span>
-      <span class="act-main">Read the PDF →</span>
-    </a>
-  ))}
+        {sec.live && (sec.live.href ? (
+          <a class="tile action action--dark" href={sec.live.href} target="_blank" rel="noopener noreferrer">
+            <span class="act-note">{sec.live.note}</span>
+            <span class="act-main">{sec.live.label} →</span>
+          </a>
+        ) : (
+          <div class="tile action action--dark is-soon">
+            <span class="act-note">{sec.live.note} · coming soon</span>
+            <span class="act-main">{sec.live.label} →</span>
+          </div>
+        ))}
 
-  {media.map((m) => {
-    const isVideo = Boolean(m.src && m.video);
-    const isPhoto = Boolean(m.src && !m.video);
-    return (
-      <div class="tile media">
-        {isVideo && (
-          <video class="m-fill" controls preload="metadata" playsinline aria-label={m.alt}>
-            <source src={m.src} type="video/mp4" />
-          </video>
+        {sec.pdfs.map((pdf) => (
+          <a class="tile action action--light" href={pdf.href} target="_blank" rel="noopener noreferrer">
+            <span class="act-note">{pdf.label}</span>
+            <span class="act-main">Read the PDF →</span>
+          </a>
+        ))}
+
+        {sec.quote && (
+          <div class="tile quote">
+            <p class="q-text serif">{sec.quote.text}</p>
+            <div class="q-attr"><span class="q-line"></span>{sec.quote.attr}</div>
+          </div>
         )}
-        {isPhoto && <img class="m-fill" src={m.src} alt={m.alt} loading="lazy" decoding="async" />}
-        {!m.src && m.video && <span class="m-play" aria-hidden="true">▶</span>}
-        {m.corner && <span class="m-corner m-badge">{m.corner}</span>}
-        {!isVideo && (
-          <span class:list={['m-cap', isPhoto && 'm-badge']}>{m.label} · <em>{m.sub}</em></span>
+
+        {sec.highlight && (
+          <div class="tile highlight">
+            <div class="n-eyebrow">{sec.highlight.eyebrow}</div>
+            <div class="n-big">{sec.highlight.big}</div>
+            <p class="n-sub">{sec.highlight.sub}</p>
+          </div>
         )}
       </div>
-    );
-  })}
+    )}
 
-  {proj.quote && (
-    <div class="tile quote">
-      <p class="q-text serif">{proj.quote.text}</p>
-      <div class="q-attr"><span class="q-line"></span>{proj.quote.attr}</div>
-    </div>
-  )}
+    {hasMedia(sec) && (
+      <div class="media-row">
+        {sec.media.map((m) => {
+          const isVideo = Boolean(m.src && m.video);
+          const isPhoto = Boolean(m.src && !m.video);
+          return (
+            <div class="tile media" style={`aspect-ratio:${ratioOf(m)}`}>
+              {isVideo && (
+                <video class="m-fill" controls preload="metadata" playsinline aria-label={m.alt}>
+                  <source src={m.src} type="video/mp4" />
+                </video>
+              )}
+              {/* w/h are the asset's real measured pixels. The tile already
+                  reserves space via aspect-ratio, so this isn't a CLS fix —
+                  it's so the intrinsic size is declared rather than inferred. */}
+              {isPhoto && (
+                <img
+                  class="m-fill"
+                  src={m.src}
+                  alt={m.alt}
+                  width={m.w}
+                  height={m.h}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              {!m.src && m.video && <span class="m-play" aria-hidden="true">▶</span>}
+              {m.corner && <span class="m-corner m-badge">{m.corner}</span>}
+              {!isVideo && (
+                <span class:list={['m-cap', isPhoto && 'm-badge']}>{m.label} · <em>{m.sub}</em></span>
+              )}
+            </div>
+          );
+        })}
 
-  {proj.note && (
-    <div class="tile highlight">
-      <div class="n-eyebrow">{proj.note.eyebrow}</div>
-      <div class="n-big">{proj.note.big}</div>
-      <p class="n-sub">{proj.note.sub}</p>
-    </div>
-  )}
-</div>
+        {sec.carousel && (
+          <div class="proof-post" style={`--post-ar:${arNumber(sec.carousel.aspect)}`}>
+            <Carousel
+              id={sec.carousel.id}
+              label={sec.carousel.label}
+              sub={sec.carousel.sub}
+              slides={sec.carousel.slides}
+              aspect={sec.carousel.aspect}
+            />
+          </div>
+        )}
+      </div>
+    )}
+  </section>
+))}
 
 <style>
+  .proof-sec + .proof-sec { margin-top: 34px; }
+
+  /* Group header: mono label + hairline filler rule. */
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .sec-label {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    flex: 0 0 auto;
+  }
+  .sec-kicker {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--faint); flex: 0 0 auto;
+  }
+  .sec-rule { flex: 1 1 auto; height: 1px; background: var(--line-2); min-width: 20px; }
+
+  /* Explicit column counts, NOT auto-fill.
+     auto-fill made the live column count depend on the container width minus
+     the scrollbar, so it was environment-dependent and impossible to write
+     correct tile spans against — a rule aimed at "the 4-column case" silently
+     applied at 3 columns and left holes. Tile spans only tessellate if the
+     column count is known, so it is now fixed per breakpoint. Track widths
+     stay ~220-280px, the same visual density as before. */
   .bento {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     grid-auto-rows: 78px;          /* base unit; tiles span N rows */
     grid-auto-flow: row dense;
     gap: 14px;
   }
+  @media (max-width: 1239px) { .bento { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 1023px) { .bento { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 819px)  { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 599px)  { .bento { grid-template-columns: minmax(0, 1fr); } }
   .tile {
     border-radius: var(--r);
     border: 1px solid var(--line);
@@ -92,16 +229,25 @@ const media = [proj.media, proj.media2].filter(Boolean);
     overflow: hidden;
   }
 
+  /* Group tone. `wash` is the SAME accent at low opacity — a tint, not a
+     second colour — so two builds read as distinct without breaking the
+     one-accent rule. */
+  .tone-wash .tile.stat,
+  .tone-wash .tile.action--light {
+    background: rgba(74, 47, 29, 0.06);
+    border-color: rgba(74, 47, 29, 0.16);
+  }
+
   /* stat cards — the small tiles (2 units tall) */
-  .stat { grid-row: span 2; justify-content: space-between; gap: 12px; }
+  .stat { grid-row: span 2; justify-content: space-between; gap: 10px; }
   .stat--lead { grid-column: span 2; }
   .stat-n {
-    font-size: clamp(30px, 3.4vw, 40px); font-weight: 800; letter-spacing: -0.02em;
+    font-size: clamp(32px, 3.4vw, 42px); font-weight: 800; letter-spacing: -0.02em;
     color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.02;
   }
-  .stat--lead .stat-n { font-size: clamp(38px, 4.6vw, 54px); }
-  .stat-l { font-size: 13.5px; color: var(--muted-2); line-height: 1.45; }
-  .stat-src { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); }
+  .stat--lead .stat-n { font-size: clamp(40px, 4.6vw, 56px); }
+  .stat-l { font-size: 15px; font-weight: 500; color: var(--muted-2); line-height: 1.5; }
+  .stat-src { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--faint); }
 
   /* action tiles — live link + case-study PDFs (2 units tall) */
   .action { grid-row: span 2; justify-content: space-between; gap: 16px; text-decoration: none; transition: background .2s ease, border-color .2s ease, color .2s ease; }
@@ -111,23 +257,29 @@ const media = [proj.media, proj.media2].filter(Boolean);
   .action--dark.is-soon:hover { background: var(--ink); }
   .action--light { color: var(--ink); }
   .action--light:hover { border-color: var(--accent); color: var(--accent); }
-  .act-note { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.72; }
-  .act-main { font-size: 16px; font-weight: 700; }
+  .act-note { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; line-height: 1.5; }
+  .act-main { font-size: 17px; font-weight: 800; }
 
-  /* media — larger landscape tiles (spans 2 cols, 3 units tall). A real
-     photo/video fills the tile via object-fit: cover — it crops to fit,
-     it never stretches or distorts, no matter the source's own aspect ratio. */
+  /* ---- media band ----
+     Shared row height, per-item width from the item's own aspect ratio.
+     Nothing is cropped, nothing is stretched, and no tile is left with dead
+     space under a photo that doesn't match the box. */
+  .media-row {
+    --mh: 380px;
+    display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px;
+    margin-top: 14px;
+  }
   .media {
-    grid-column: span 2; grid-row: span 3;
+    flex: 0 0 auto; height: var(--mh); width: auto;
     position: relative; justify-content: flex-end; padding: 18px;
     background: repeating-linear-gradient(135deg, rgba(26,24,19,0.055) 0 13px, rgba(26,24,19,0.02) 13px 26px);
   }
+  /* The tile's box already equals the asset's ratio, so `cover` fills it
+     without cropping anything — it only guards against sub-pixel rounding. */
   .m-fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
-  .m-cap { position: relative; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .m-cap { position: relative; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
   .m-cap em { color: var(--faint); font-style: normal; }
-  .m-corner { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; color: var(--accent); }
-  /* over a real photo, captions/corner tags get a dark chip so they stay
-     legible regardless of what's underneath */
+  .m-corner { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--accent); }
   .m-badge {
     z-index: 1; background: rgba(20, 18, 14, 0.72); color: #f2ede3;
     padding: 6px 10px; border-radius: 6px; backdrop-filter: blur(3px);
@@ -140,20 +292,78 @@ const media = [proj.media, proj.media2].filter(Boolean);
     box-shadow: 0 10px 26px rgba(74, 47, 29, 0.35);
   }
 
-  /* quote + highlight — wide tiles (spans 2 cols, 3 units tall) */
-  .quote { grid-column: span 2; grid-row: span 3; justify-content: center; gap: 16px; }
+  /* Width is derived from the row height and the post's own aspect, so the
+     slide window lands at exactly --mh and lines up with the media beside it. */
+  .proof-post { flex: 0 0 auto; width: calc(var(--mh) * var(--post-ar, 0.8)); }
+
+  /* quote + highlight — wide tiles (2 cols, 3 units tall) */
+  .quote { grid-column: 1 / -1; grid-row: span 3; justify-content: center; gap: 16px; }
   .q-text { font-size: clamp(19px, 2vw, 25px); line-height: 1.32; color: var(--ink); }
   .q-attr { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
   .q-line { width: 22px; height: 1px; background: rgba(26, 24, 19, 0.3); }
 
-  .highlight { grid-column: span 2; grid-row: span 3; gap: 10px; justify-content: center; }
-  .n-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
-  .n-big { font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
-  .n-sub { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+  /* Every other tile in the bento is 2 rows tall. A 3-row highlight therefore
+     can never tessellate: on the 5-column grid the tiles come to exactly 20
+     cells = 5x4, but only if nothing is 3 rows, so the odd tile left a dead
+     column beside it AND a dead strip under its neighbours (measured: 5 empty
+     cells). Wider-and-shorter (3x2) closes both holes; the narrow grids keep
+     2x3 because there a 3-column tile can't sit beside the action tiles. */
+  /* Sized per column count so it always closes its row, and always tall
+     enough for its text (span 2 is too narrow to fit the copy in 2 rows). */
+  .highlight { grid-column: span 3; grid-row: span 2; gap: 8px; justify-content: center; }
+  @media (max-width: 1239px) { .highlight { grid-column: 1 / -1; grid-row: span 2; } }
+  @media (max-width: 1023px) { .highlight { grid-column: span 2; grid-row: span 3; } }
+  @media (max-width: 819px)  { .highlight { grid-column: 1 / -1; grid-row: span 3; } }
+  /* ---- closing the last row ----
+     A band that ENDS on an action tile leaves its leftover columns empty —
+     the stray gap beside a lone "Read the PDF" tile. The span that closes the
+     row depends on how many columns auto-fill is currently producing, so each
+     arithmetic case gets exactly one rule, keyed to the width where that
+     column count occurs (220px track inside a max 1180px container).
+     Note `auto / -1` does NOT work here: with an auto start the span stays 1,
+     so it just pins the tile to the last column and moves the gap in front of
+     it. Bands ending on a highlight or quote already tessellate — untouched.
 
-  /* On a single-column grid the span-2 tiles just fill the one column; give
-     the media a touch more height so a landscape photo still reads well. */
+     A 3-tile band is 2+1+1 = 4 units; a 4-tile band is 2+1+1+1 = 5 units.
+     Each rule below is the span that makes those close the row at that
+     column count (breakpoints match the .bento column rules exactly). */
+  @media (min-width: 1240px) {                          /* 5 columns */
+    .bento:has(> :nth-child(3):last-child) > .action:last-child { grid-column: span 2; }
+  }
+  @media (min-width: 1024px) and (max-width: 1239px) {  /* 4 columns */
+    .bento:has(> :nth-child(4):last-child) > .action:last-child { grid-column: 1 / -1; }
+  }
+  @media (min-width: 820px) and (max-width: 1023px) {   /* 3 columns */
+    .bento:has(> :nth-child(3):last-child) > .action:last-child,
+    .bento:has(> :nth-child(4):last-child) > .action:last-child { grid-column: span 2; }
+  }
+  @media (max-width: 819px) {                           /* 2 columns and 1 */
+    .bento:has(> :nth-child(4):last-child) > .action:last-child { grid-column: 1 / -1; }
+  }
+  .n-eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  /* Display line — 1.55 body leading wasted ~12px of the tile's height. */
+  .n-big { font-size: clamp(23px, 2.4vw, 31px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; color: var(--ink); }
+  .n-sub { font-size: 15.5px; color: var(--muted-2); line-height: 1.55; }
+
+  /* Breakpoints are derived, not guessed. Two items side by side need
+     `--mh * (sum of their ratios) + 14px` of room:
+       --mh 380 → widest pair is ~1027px, so it needs a >=1095px viewport
+       --mh 300 → ~814px, so it needs a >=885px viewport
+     Below each threshold the row would wrap while items kept their filmstrip
+     height — which is what left the post orphaned on its own line at a
+     narrower width instead of stacking cleanly. Shrink, then stack. */
+  @media (max-width: 1100px) {
+    .media-row { --mh: 300px; }
+  }
+  @media (max-width: 885px) {
+    /* Stack: full width, height from the item's own ratio. */
+    .media-row { display: grid; grid-template-columns: 1fr; }
+    .media { height: auto; width: 100%; }
+    .proof-post { width: 100%; max-width: 420px; }
+  }
   @media (max-width: 480px) {
-    .stat--lead, .media, .quote, .highlight { grid-column: 1 / -1; }
+    .stat--lead, .highlight { grid-column: 1 / -1; }
+    .proof-post { max-width: none; }
+    .sec-kicker { display: none; }
   }
 </style>

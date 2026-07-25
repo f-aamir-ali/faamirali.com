@@ -1,10 +1,26 @@
 # F. Aamir Ali
 
-> F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school, a system his principal recognized as the first of its kind built by a student there, and he planned and executed the first youth AI summit in Surrey, bringing about 70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.
+> F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school, a system his principal recognized as the first of its kind built by a student there, and he co-founded the first youth AI summit in Surrey and leads it as CEO, bringing about 70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.
+
+Surrey, British Columbia, Canada · Grade 11 at Fleetwood Park Secondary School · contact: fatehaamirali@gmail.com
 
 ## Pages
+- [Home](https://faamirali.com/): The three projects at a glance, with the headline number for each.
 - [About](https://faamirali.com/about): Full background, covering the short canonical record and the longer first-person story.
-- [FleetBot](https://faamirali.com/work/fleetbot): Two AI assistants built for a 1,500-student school: a student chatbot whose public beta ran on $2.76 with zero errors, and a staff assistant deployed on a front-office terminal that handled 150+ queries in its first 10 days. Full case-study PDFs for both builds.
-- [Surrey Youth AI Summit](https://faamirali.com/work/surrey-ai-summit): The first youth AI summit in Surrey, a one-day event he planned and executed: about 70 students from 14 schools, a real sponsor, professional judges, and a UBC keynote.
+- [FleetBot](https://faamirali.com/work/fleetbot): Two AI assistants built for a 1,500-student school: a student chatbot whose public beta ran on $2.76 with zero errors, and a staff assistant deployed on a front-office terminal that handled 150+ queries in its first 10 days.
+- [Surrey Youth AI Summit](https://faamirali.com/work/surrey-ai-summit): The first youth AI summit in Surrey, which he co-founded and leads as CEO: about 70 students from 14 schools, a real sponsor, professional judges, and a UBC keynote.
 - [AI & Innovation Club](https://faamirali.com/work/ai-club): The club he founded to teach students to build with AI: 20 members, and a real build shipped every meeting.
-- [Honours](https://faamirali.com/honours): The formal record, including his principal's recommendation letter in full, plus certificates and scholarship wins as they're awarded.
+- [Honours](https://faamirali.com/honours): The formal record, including his principal's recommendation letter reproduced in full.
+
+## Case studies
+The long-form engineering record for each project, as HTML. Each page also links a PDF of the unabridged version.
+
+- [FleetBot (Student)](https://faamirali.com/case-study/fleetbot-student): Three platforms evaluated before Botpress, the deterministic rebuild that cut cost from $5 per 20 messages to cents per message, and the launch numbers.
+- [FleetBot (Staff)](https://faamirali.com/case-study/fleetbot-staff): The privacy rebuild that won the school's approval, retrieval tuning that cut a worst-case query from $0.45 and 12 seconds to under half a cent and ~2.5 seconds, 27 school PDFs hand-converted into 35 clean Markdown files, and one Make.com Iterator replacing a 20+ module workflow across six athletics calendars.
+- [Surrey Youth AI Summit](https://faamirali.com/case-study/surrey-ai-summit): The judging design that kept the result credible, the over-accept buffer against no-shows, and the marketing funnel that turned 22,062 views into 81 sign-ups.
+- [AI & Innovation Club](https://faamirali.com/case-study/ai-club): Why every meeting ships something, why no-code beat teaching programming first, and how the Best Buy entry became an open internal contest.
+
+## Key facts
+- FleetBot's student build launched January 11, 2026. The staff build was deployed April 22, 2026 on a physical terminal in the school's main office; his principal's letter calls it the first student-built system of its kind at the school.
+- The Surrey Youth AI Summit ran June 23, 2026. Co-founded with Yuvraj Bains of Panorama Ridge Secondary; F. Aamir Ali is its CEO. Sponsored by Generation AI, with a keynote from Dr. Peter Ostafichuk of UBC.
+- The AI & Innovation Club was founded in September 2025 at Fleetwood Park Secondary. 20 active members, ~13 hands-on meetings.

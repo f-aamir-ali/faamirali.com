@@ -10,3 +10,8 @@ node_modules/
 # os
 .DS_Store
 Thumbs.db
+
+# Raw, uncompressed source assets (camera originals for the Summit photos and
+# similar). Kept locally as the masters; the compressed, web-ready versions in
+# public/img/ are what ship. ~57MB of originals has no business in git history.
+website assets/

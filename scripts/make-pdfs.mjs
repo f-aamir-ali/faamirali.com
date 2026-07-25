@@ -1,24 +1,27 @@
-// Generate the linked case-study PDFs from the NEW source Markdown
-// (the "_f" final versions). Per Blueprint v3 §1.4: light formatting +
-// a privacy scrub only — the case studies are the long-form record, so
-// their substance is NOT rewritten. One normalization is applied: the
-// club member count is 20 everywhere (locked decision, backed by the
-// principal's letter), so the stray "12 active members" line is aligned.
+// Generate the linked case-study PDFs from the source Markdown.
+//
+// The source now lives IN THE REPO at src/content/case-studies/ and is shared
+// with the on-site HTML case-study pages through src/data/caseStudies.js. It
+// used to be read from an absolute path in the owner's Downloads folder, which
+// meant this script only ran on one machine and the case-study text could
+// never take part in a clean checkout or a Vercel build.
+//
+// The PDF is the FULL record: only `factFixes` are applied here (corrections
+// where the markdown contradicted a locked fact). The `siteEdits` layer — the
+// site's no-negatives rule — is deliberately NOT applied, so the setbacks,
+// the usage curve and the competition result stay in the downloadable
+// document. That asymmetry is the whole design: the page is the summary, the
+// PDF is the unabridged version.
 import { readFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { marked } from 'marked';
 import { chromium } from 'playwright';
+import { caseStudies, renderSource, assertAllApplied } from '../src/data/caseStudies.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '..', 'public', 'pdf');
-const SRC = 'C:/Users/fateh/Downloads/College Applications/Main Projects';
-
-function applyReplacements(md, replacements = []) {
-  let out = md;
-  for (const [a, b] of replacements) out = out.split(a).join(b);
-  return out;
-}
+const SRC = join(__dirname, '..', 'src', 'content', 'case-studies');
 
 // Print skin — matches the site (cream-adjacent paper kept white for
 // print, typewriter ink, single dark-brown accent, ruled heads).
@@ -60,43 +63,21 @@ function htmlDoc(title, body) {
   <body><div class="brand"><span class="bdot"></span> F. Aamir Ali · faamirali.com · Case study</div>${body}</body></html>`;
 }
 
-const docs = [
-  {
-    out: 'fleetbot-student-case-study.pdf',
-    title: 'FleetBot (Student) — Case Study',
-    path: `${SRC}/FleetBot (Student)/FleetBot Student Case Study_f.md`,
-  },
-  {
-    out: 'fleetbot-staff-case-study.pdf',
-    title: 'FleetBot (Staff) — Case Study',
-    path: `${SRC}/FleetBot (Staff)/FleetBot Staff Case Study_f.md`,
-  },
-  {
-    out: 'surrey-ai-summit-case-study.pdf',
-    title: 'Surrey Youth AI Summit — Case Study',
-    path: `${SRC}/SYAIS/SYAIS Case Study_f.md`,
-  },
-  {
-    out: 'ai-club-case-study.pdf',
-    title: 'AI & Innovation Club — Case Study',
-    path: `${SRC}/AI Club/AI Club Case Study_f.md`,
-    // Club count is 20 everywhere (locked decision, letter-backed) —
-    // aligns the one stray "12" in the source's Results section.
-    replacements: [['12 active members', '20 active members']],
-  },
-];
-
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
 try {
-  for (const doc of docs) {
-    const md = await readFile(doc.path, 'utf8');
-    const body = marked.parse(applyReplacements(md, doc.replacements));
-    const html = htmlDoc(doc.title, body);
+  for (const doc of caseStudies) {
+    const raw = await readFile(join(SRC, doc.file), 'utf8');
+    const { markdown, applied } = renderSource(raw, doc, { forSite: false });
+    // A factFix that stopped matching means the PDF is about to ship a number
+    // the site contradicts. Fail loudly rather than publish the mismatch.
+    assertAllApplied(doc, applied, { forSite: false });
+    const body = marked.parse(markdown);
+    const html = htmlDoc(doc.docTitle, body);
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle' });
     await page.pdf({
-      path: join(OUT, doc.out),
+      path: join(OUT, doc.pdf),
       format: 'A4',
       printBackground: true,
       displayHeaderFooter: true,
@@ -106,7 +87,7 @@ try {
       margin: { top: '18mm', bottom: '16mm', left: '16mm', right: '16mm' },
     });
     await page.close();
-    console.log('pdf →', doc.out);
+    console.log('pdf →', doc.pdf);
   }
 } finally {
   await browser.close();

@@ -1,0 +1,190 @@
+---
+// An Instagram-style click-through carousel for a multi-slide post.
+//
+// Zero client JS by design: state lives in a native radio group and the
+// slide transform is driven purely by :checked sibling selectors. That keeps
+// it inside the site's hard constraint (all content is static server-rendered
+// HTML), works with JS disabled, and every slide ships as a real <img> in the
+// served markup so crawlers see all of them. It also comes with free keyboard
+// support — the radios stay screen-reader focusable, so arrow keys move
+// through slides the way a native radio group does.
+//
+// Slides use object-fit: contain, NOT the .m-fill cover treatment used by
+// photo tiles. A marketing post has its own copy baked into the image, and
+// cropping to fill would cut that text off.
+//
+// Renders only when every slide file is actually on disk; otherwise it falls
+// back to the labelled stripe placeholder, so a not-yet-dropped-in asset can
+// never surface as a broken image.
+import { missingPublicAssets } from '../data/publicAssets.js';
+
+// `aspect` shapes the slide window (a social post is portrait by default).
+// It sizes itself rather than filling a parent, so it can sit anywhere.
+const { id, label, sub, slides = [], aspect = '4 / 5' } = Astro.props;
+
+// Resolved from the project root, NOT relative to this module — see
+// src/data/publicAssets.js for why that distinction silently broke this
+// component once already.
+const missingSrcs = missingPublicAssets(slides.map((s) => s.src));
+const missing = slides.filter((s) => missingSrcs.includes(s.src));
+const ready = slides.length > 0 && missing.length === 0;
+// Collapse a long list to a range — spelling out 19 filenames is unreadable.
+const names = slides.map((s) => s.src.split('/').pop());
+const wanted =
+  names.length > 6
+    ? `${names[0]} – ${names[names.length - 1]} (${names.length} files)`
+    : names.join(', ');
+
+const root = `${id}-car`;
+const last = slides.length - 1;
+
+const baseCss = `
+#${root} { margin: 0; display: flex; flex-direction: column; }
+#${root} .car-state {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+#${root} .car-win {
+  position: relative; flex: 0 0 auto; width: 100%; aspect-ratio: ${aspect};
+  overflow: hidden; border-radius: var(--r); background: var(--card);
+  border: 1px solid var(--line);
+}
+#${root} .car-track {
+  display: flex; height: 100%; width: 100%;
+  transition: transform .38s cubic-bezier(.4, 0, .2, 1);
+}
+#${root} .car-img {
+  flex: 0 0 100%; width: 100%; height: 100%;
+  object-fit: contain; background: var(--card);
+}
+#${root} .car-navs { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+#${root} .car-nav {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 10px;
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
+}
+#${root} .car-arrow {
+  width: 34px; height: 34px; border-radius: 50%; flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: rgba(20, 18, 14, .72); color: #f2ede3;
+  font-size: 19px; line-height: 1; padding-bottom: 2px;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  transition: background .2s ease;
+}
+#${root} .car-arrow:hover { background: var(--accent); }
+#${root} .car-arrow.is-off { visibility: hidden; }
+#${root} .car-dots {
+  position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2;
+  display: flex; justify-content: center; gap: 7px;
+}
+#${root} .car-dot {
+  width: 7px; height: 7px; border-radius: 50%; cursor: pointer;
+  background: rgba(20, 18, 14, .28);
+  transition: background .2s ease, transform .2s ease;
+}
+#${root} .car-dot:hover { background: var(--accent); }
+#${root} .car-cap {
+  flex: 0 0 auto; margin-top: 10px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+#${root} .car-cap em { color: var(--faint); font-style: normal; }
+#${root} .sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+`;
+
+// State is matched with :has() on the root rather than a `:checked ~ sibling`
+// chain. Both work; :has() is used because it matches on the container instead
+// of on sibling order, so the inputs no longer have to stay siblings of the
+// viewport and the markup can be rearranged without silently breaking the CSS.
+const stateCss = slides
+  .map((_, k) => {
+    const i = k + 1;
+    const on = `#${root}:has(#${id}-${i}:checked)`;
+    return [
+      `${on} .car-track { transform: translateX(-${k * 100}%); }`,
+      `${on} .car-nav[data-slide="${i}"] { opacity: 1; pointer-events: auto; }`,
+      `${on} .car-dot:nth-child(${i}) { background: var(--accent); transform: scale(1.3); }`,
+      `#${root}:has(#${id}-${i}:focus-visible) .car-dot:nth-child(${i}) { outline: 2px solid var(--accent); outline-offset: 2px; }`,
+    ].join('\n');
+  })
+  .join('\n');
+
+const phCss = `
+#${root} { margin: 0; }
+#${root} .ph-box {
+  width: 100%; aspect-ratio: ${aspect};
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; text-align: center;
+  border-radius: var(--r); border: 1px solid var(--line);
+  background: repeating-linear-gradient(135deg, rgba(26,24,19,0.055) 0 13px, rgba(26,24,19,0.02) 13px 26px);
+}
+#${root} .ph-label { font-family: var(--font-mono); font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+#${root} .ph-sub { font-family: var(--font-mono); font-size: 11px; color: var(--faint); letter-spacing: .04em; line-height: 1.6; }
+`;
+
+const css = ready ? baseCss + stateCss : phCss;
+---
+<style is:inline set:html={css}></style>
+
+{ready ? (
+  <figure id={root}>
+    {slides.map((s, k) => (
+      <input
+        class="car-state"
+        type="radio"
+        name={id}
+        id={`${id}-${k + 1}`}
+        checked={k === 0}
+        aria-label={`Show slide ${k + 1} of ${slides.length}`}
+      />
+    ))}
+
+    <div class="car-win">
+      <div class="car-track">
+        {slides.map((s) => (
+          <img class="car-img" src={s.src} alt={s.alt} loading="lazy" decoding="async" />
+        ))}
+      </div>
+
+      <div class="car-navs">
+        {slides.map((_, k) => (
+          <div class="car-nav" data-slide={k + 1}>
+            {k > 0 ? (
+              <label class="car-arrow" for={`${id}-${k}`} title="Previous slide">
+                <span aria-hidden="true">‹</span><span class="sr">Previous slide</span>
+              </label>
+            ) : (
+              <span class="car-arrow is-off" aria-hidden="true">‹</span>
+            )}
+            {k < last ? (
+              <label class="car-arrow" for={`${id}-${k + 2}`} title="Next slide">
+                <span aria-hidden="true">›</span><span class="sr">Next slide</span>
+              </label>
+            ) : (
+              <span class="car-arrow is-off" aria-hidden="true">›</span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="car-dots">
+        {slides.map((_, k) => (
+          <label class="car-dot" for={`${id}-${k + 1}`}>
+            <span class="sr">Go to slide {k + 1}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <figcaption class="car-cap">{label} <em>· {sub}</em></figcaption>
+  </figure>
+) : (
+  <figure id={root}>
+    <div class="ph-box">
+      <div class="ph-label">{label}</div>
+      <div class="ph-sub">{wanted}<br />drop into /public/img/</div>
+    </div>
+  </figure>
+)}

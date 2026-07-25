@@ -6,8 +6,10 @@ import { projects } from '../data/projects.js';
 import { SITE_URL, profilePageJsonLd } from '../data/site.js';
 
 const title = 'F. Aamir Ali | Builder & Founder';
+// Kept under ~160 characters so Google shows it whole instead of truncating
+// mid-sentence in the result that matters most.
 const description =
-  'F. Aamir Ali is a student builder and founder from Surrey, BC. He built and deployed an AI assistant in his 1,500-student high school and planned and executed the first youth AI summit in Surrey.';
+  'Student builder and founder in Surrey, BC. I deployed an AI assistant in my 1,500-student school and co-founded the first youth AI summit in Surrey.';
 ---
 <Base
   title={title}
@@ -49,7 +51,7 @@ const description =
           <div class="eyebrow" style="margin-bottom:14px;">Selected work · 2025–2026</div>
           <h2 class="work-title">Built &amp; <span class="serif">shipped.</span></h2>
         </div>
-        <p class="work-sub">Real, deployed work, not concepts. Every number below traces back to a document, a dashboard, or a letter.</p>
+        <p class="work-sub">Real and deployed work, not concepts.</p>
       </div>
       <div class="work-grid">
         {projects.map((p) => <ProjectRow project={p} />)}
@@ -88,7 +90,7 @@ const description =
   /* Bigger + bolder than a normal eyebrow — it needs to read clearly as a
      section label ("this is someone else's words") before the quote itself,
      so the pull-quote doesn't land as self-praise. */
-  .rec-eyebrow { font-size: 15px; font-weight: 700; letter-spacing: 0.14em; color: var(--ink); margin-bottom: 28px; }
+  .rec-eyebrow { font-size: 17px; font-weight: 700; letter-spacing: 0.14em; color: var(--ink); margin-bottom: 28px; }
   .rec-quote { font-size: clamp(28px, 4.2vw, 50px); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 26px; }
   .rec-attr { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
   .rec-line { width: 26px; height: 1px; background: rgba(28, 26, 20, 0.3); }
