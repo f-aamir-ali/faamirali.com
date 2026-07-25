@@ -2,8 +2,9 @@
 // Facts trace to the four case studies (src/content/case-studies/*.md) and
 // the principal's letter.
 // Voice rules (owner decisions): first person; the Summit is "co-founded" and
-// he is its CEO, blended into the sentence, with Yuvraj Bains / Panorama Ridge
-// credited (this REVERSED an earlier "planned and executed" wording); no
+// he is its Lead Organizer, blended into the sentence, with Yuvraj Bains /
+// Panorama Ridge credited (this REVERSED an earlier "planned and executed"
+// wording, then reverted CEO -> Lead Organizer while keeping co-founder); no
 // negatives on the site (declines / losses / what-broke stay in the linked
 // case-study PDFs); explain things for a reader who's never heard of them.
 //
@@ -138,12 +139,12 @@ export const projects = [
   {
     slug: 'surrey-ai-summit',
     name: 'Surrey Youth AI Summit',
-    fileLine: 'Ran June 23, 2026 · Co-Founder & CEO',
+    fileLine: 'Ran June 23, 2026 · Co-Founder & Lead Organizer',
     // Plain, one-sentence summary for the home card — no jargon, not truncated.
-    cardLine: 'Co-Founder & CEO of a one-day event where students with no coding experience built real AI tools for local businesses.',
+    cardLine: 'Co-Founder & Lead Organizer of a one-day event where students with no coding experience built real AI tools for local businesses.',
     seoTitle: 'Surrey Youth AI Summit: 70 students, 14 schools | F. Aamir Ali',
     seoDescription:
-      'The first youth AI summit in Surrey, which I co-founded and lead as CEO: about 70 students from 14 schools built and pitched working AI in a single day.',
+      'The first youth AI summit in Surrey, which I co-founded and lead: about 70 students from 14 schools built and pitched working AI in a single day.',
     ogImage: '/og/surrey-ai-summit.png',
     published: '2026-06-23',
     updated: '2026-07-25',
@@ -152,7 +153,7 @@ export const projects = [
     acts: null,
     intro: [
       'On June 23, 2026, about 70 students from 14 different schools spent a single day building working AI tools for local businesses, then pitched what they had made to a panel of judges. Nothing like it had been run for students in Surrey before.',
-      "I co-founded the event with Yuvraj Bains from Panorama Ridge, and I'm the CEO of the entire summit. I ran it end to end, from the first planning meeting to the closing pitches on the day.",
+      "I co-founded the event with Yuvraj Bains from Panorama Ridge, and I'm the Lead Organizer of the entire summit. I ran it end to end, from the first planning meeting to the closing pitches on the day.",
       'The first piece was the platform. I designed and built the website the summit ran on, which is where every participant registered and where all the event information lived.',
       'The second piece was funding and credibility. I brought in Generation AI, a group that runs AI-education programs, as our sponsor. They put up the prize money, sent professional judges to score the final pitches, and helped line up a UBC professor to give the keynote.',
       'Most of the students who arrived that morning had little to no coding experience. By the end of the day, every team had something that actually worked, and they got up and pitched it themselves.',

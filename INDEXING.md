@@ -209,8 +209,8 @@ These are ordered by how likely they are to actually happen:
   principal's letter, and a link.
 - **The Summit site.** `surreyaisummit.vercel.app` is a site you control that
   isn't this domain. It should link to `faamirali.com` and name you as
-  co-founder and CEO. Free, immediate, and it corroborates the single claim most
-  worth corroborating.
+  co-founder and Lead Organizer. Free, immediate, and it corroborates the
+  single claim most worth corroborating.
 - **UBC / Dr. Ostafichuk**, if there's any keynote recap or Generation AI writeup
   that could name the event and its organizers.
 

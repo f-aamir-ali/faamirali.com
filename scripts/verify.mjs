@@ -214,8 +214,12 @@ section('Fact consistency: site vs PDF-bound text vs llms.txt');
   const forbidden = [
     ['12 active members', 'club count is 20 everywhere'],
     ['~15 bi-weekly meetings', 'meeting count is ~13 everywhere'],
-    ['Lead Organizer', 'the Summit role is Co-Founder & CEO'],
-    ['planned and executed', 'superseded by the co-founded/CEO wording'],
+    // Owner decision: the Summit role is Co-Founder & Lead Organizer. This has
+    // flipped twice now (Lead Organizer -> Co-Founder & CEO -> back to
+    // Co-Founder & Lead Organizer) — check the CURRENT locked wording in
+    // CLAUDE.md before "fixing" this the other way again.
+    ['CEO', 'the Summit role is Co-Founder & Lead Organizer, not CEO'],
+    ['planned and executed', 'superseded by the co-founded/Lead Organizer wording'],
     ['Views on our launch reels', '22K is the whole campaign, not just the reels'],
   ];
   for (const [needle, why] of forbidden) {

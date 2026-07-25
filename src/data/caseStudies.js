@@ -110,11 +110,11 @@ export const caseStudies = [
     published: '2026-06-23',
     updated: '2026-07-25',
     factFixes: [
-      // The site states Co-Founder & CEO (locked owner decision, and the
-      // principal's letter says "co-founder and lead organizer"). The source
-      // markdown still said "Lead Organizer", which contradicted the site's
-      // single most prominent claim about this project.
-      ['**Role:** Lead Organizer', '**Role:** Co-Founder & CEO'],
+      // The site states Co-Founder & Lead Organizer (locked owner decision,
+      // matching the principal's letter, which says "co-founder and lead
+      // organizer"). The source markdown's Role line credits only "Lead
+      // Organizer", missing the co-founder credit the site gives him.
+      ['**Role:** Lead Organizer', '**Role:** Co-Founder & Lead Organizer'],
       // Yuvraj stays credited, with his school, matching the site.
       ['Yuvraj (co-founder)', 'Yuvraj Bains (co-founder, Panorama Ridge)'],
     ],
