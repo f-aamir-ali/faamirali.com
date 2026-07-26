@@ -2,6 +2,8 @@
 
 A student-facing AI chatbot that answers everyday school questions, like the block rotation, who teaches what, and which clubs exist, from the school's own public documents. Launched school-wide through the AI Club Instagram.
 
+The whole thing runs on retrieval-augmented generation, or RAG: instead of answering from what the AI model happens to remember, the bot searches the school's actual documents the moment a question comes in and is only allowed to answer from the passages it finds. Those passages are called chunks, and how many of them the bot is allowed to pull per question turns out to drive both the cost and the accuracy numbers below.
+
 **Role:** Sole builder, covering bot logic, prompt system, RAG data pipeline, and website
 **Timeline:** built through Jan 2026 · launched ~Jan 11, 2026
 **Stack:** Botpress (deterministic flow) · Lovable (website) · GPT-4o Mini · GPT-5 Nano · RAG

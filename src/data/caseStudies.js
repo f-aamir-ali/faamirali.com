@@ -38,7 +38,7 @@ export const caseStudies = [
     blurb:
       'The full engineering record of the student chatbot: three platforms evaluated, the deterministic rebuild that cut cost to cents per message, and the launch numbers.',
     published: '2026-01-11',
-    updated: '2026-07-25',
+    updated: '2026-07-26',
     factFixes: [],
     siteEdits: [
       {
@@ -61,7 +61,7 @@ export const caseStudies = [
     blurb:
       'The privacy rebuild that won the school over, retrieval tuning that cut a query from $0.45 to under half a cent, and one live integration across six calendars.',
     published: '2026-04-22',
-    updated: '2026-07-25',
+    updated: '2026-07-26',
     factFixes: [],
     siteEdits: [
       {
@@ -81,9 +81,18 @@ export const caseStudies = [
       {
         // No-negatives rule: reframes a blocked approval as a designed build
         // plus the recommendation letter that closed the pilot.
+        //
+        // This version ALSO gives the paragraph an ending. The previous one
+        // stopped at "was its own piece of engineering" and never said what
+        // happened, so a reader waiting for the outcome read the silence as a
+        // hidden failure — worse than the real answer. The real answer is a
+        // structural access boundary (a district does not grant a student
+        // account write access to confidential staff data), which is a systems
+        // fact rather than a setback, and it is the site's stated
+        // differentiator: knowing how institutions actually work.
         startsWith: 'That next build',
         with:
-          'The next build, automated iPad-cart booking, was fully designed: same-tenant Outlook calendar sharing, Make.com scenarios for check, create and cancel, and a navigated Microsoft OAuth 2.0 admin-consent request routed through the principal to district IT. Working that request through a real school district was its own piece of engineering. The pilot closed with a Letter of Recommendation from the principal referencing the project.',
+          'The next build, automated iPad-cart booking, was fully designed: same-tenant Outlook calendar sharing, Make.com scenarios for check, create and cancel, and a navigated Microsoft OAuth 2.0 admin-consent request routed through the principal to district IT. Getting a request like that through a real school district is its own piece of engineering, and it ran up against the boundary every student account eventually meets: the athletics calendars shipped because they were public and read-only, while booking needs write access to a private staff calendar, and that access stays with staff. Knowing exactly where that line sits is the most useful thing this pilot taught me about building inside an institution. It closed with a Letter of Recommendation from the principal referencing the project.',
       },
       {
         // No-negatives rule. This retrospective paragraph still named "the
@@ -108,7 +117,7 @@ export const caseStudies = [
     blurb:
       'The full record of the summit: the sponsorship and keynote, the judging design that kept the result credible, and the marketing funnel that filled every seat.',
     published: '2026-06-23',
-    updated: '2026-07-25',
+    updated: '2026-07-26',
     factFixes: [
       // The site states Co-Founder & Lead Organizer (locked owner decision,
       // matching the principal's letter, which says "co-founder and lead
@@ -122,9 +131,17 @@ export const caseStudies = [
       {
         // No-negatives rule: the decision here is the buffer planning, which
         // is the part worth reading. Retitled off the email failure.
+        //
+        // The paragraph used to end "...and why the important information
+        // moved onto an Instagram post, a second contact field on the forms,
+        // and certificate delivery through the post-event survey." Cut: those
+        // three changes were caused by the acceptance emails going to spam,
+        // and this edit layer had just removed that cause — so the sentence
+        // claimed a seating buffer explained them, which no reader can follow.
+        // A trimmed edit layer has to remove causes AND their effects.
         startsWith: '**Accepting more students than the room held',
         with:
-          '**Accepting more students than the room held.**\nThe challenge: 81 sign-ups, a room with a hard cap, and a free event on the first days of summer break, where a large share of people flake. Options considered: accept exactly to the cap (rejected, because no-shows would leave the room half-empty); first-come-first-served with no buffer (rejected, same problem). What was chosen: over-accept against expected no-shows, 50 accepted and 30 waitlisted, with the waitlist as backfill. That buffer is why there was room to take in every student who showed up on the day, and why the important information moved onto an Instagram post, a second contact field on the forms, and certificate delivery through the post-event survey.',
+          '**Accepting more students than the room held.**\nThe challenge: 81 sign-ups, a room with a hard cap, and a free event on the first days of summer break, where a large share of people flake. Options considered: accept exactly to the cap (rejected, because no-shows would leave the room half-empty); first-come-first-served with no buffer (rejected, same problem). What was chosen: over-accept against expected no-shows, 50 accepted and 30 waitlisted, with the waitlist as backfill. That buffer is why there was room to take in every student who showed up on the day.',
       },
       {
         // No-negatives rule: keeps the keynote result, drops the deliverability

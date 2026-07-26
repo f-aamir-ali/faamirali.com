@@ -46,7 +46,7 @@ Built and owned the full system: the document pipeline, knowledge base, AI logic
 
 ### 4. Clean the data instead of uploading raw PDFs
 
-**The challenge:** The 27 school PDFs were full of headers, footers, scrambled tables, and invisible images that a RAG system reads as real content. The 115-page staff handbook arrived as scanned images the AI couldn't read at all.
+**The challenge:** The 27 school PDFs were full of headers, footers, scrambled tables, and invisible images that a document-retrieval (RAG) system reads as real content. The 115-page staff handbook arrived as scanned images the AI couldn't read at all.
 
 **Options considered:** Upload the raw PDFs, which is fast but low accuracy. Build an automatic conversion pipeline, which is faster but leaves the output unverified. Or convert each document by hand, which is slow but fully controlled.
 

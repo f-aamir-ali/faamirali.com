@@ -24,7 +24,7 @@ export const projects = [
       'Two AI assistants I built for my 1,500-student school: a chatbot whose beta ran on $2.76 with zero errors, and a staff assistant that took 150+ questions in 10 days.',
     ogImage: '/og/fleetbot.png',
     published: '2026-01-11',
-    updated: '2026-07-25',
+    updated: '2026-07-26',
     tagline:
       'Two builds, one school: a chatbot for 1,500 students, then a staff assistant running on a computer in the front office.',
     acts: [
@@ -33,7 +33,12 @@ export const projects = [
         title: 'A chatbot for 1,500 students',
         paras: [
           "Every school buries the things students actually need, like the daily schedule, who teaches what, and which clubs exist, inside PDFs nobody ever opens. FleetBot answers those questions in plain English, pulled straight from the school's own documents. I built the whole thing myself and launched it school-wide through the AI Club's Instagram.",
-          'The real challenge was making it cheap and reliable enough to run for an entire school at once. I engineered the whole public beta to cost just $2.76 in total, across hundreds of messages, and I wrote the rules that stop it from ever guessing an answer or replying to anything unsafe.',
+          // The $5-per-20-messages comparison is what makes $2.76 legible: on
+          // its own it is just a small number, and a reader has no scale for
+          // it. "Engineered" was also doing the wrong positioning work here
+          // (it files this as an engineering result rather than a product
+          // decision), so the sentence now leads with the rebuild.
+          'The real challenge was making it cheap and reliable enough to run for an entire school at once. My first version burned through $5 every 20 messages, so I rebuilt it from scratch, and the whole public beta ended up costing $2.76 in total across hundreds of messages. I also wrote the rules that stop it from ever guessing an answer or replying to anything unsafe.',
         ],
       },
       {
