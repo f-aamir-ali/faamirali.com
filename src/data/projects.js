@@ -235,12 +235,16 @@ export const projects = [
     intro: [
       'I started the club in September 2025. Building FleetBot had taught me something I did not expect: almost nobody around me knew what these tools could already do, let alone how to build with them. The club exists to close that gap.',
       'Every meeting is hands-on. Members use no-code tools to put together working websites, automations, and chatbots, and everyone leaves with something they built themselves rather than a slideshow they sat through.',
-      "When the Best Buy Teen Tech “Create with AI” Challenge (run with Microsoft) let each school enter only once, I opened it up as an internal contest instead of hand-picking a few people. In the end, 22 members made AI videos, and our winning entry represented the school against more than 40 others across Canada.",
+      "When the Best Buy Teen Tech “Create with AI” Challenge (run with Microsoft) let each school enter only once, I opened it up as an internal contest instead of hand-picking a few people. In the end, 22 members made AI videos, and the one that won our internal contest became the school's single national entry, up against more than 40 other schools across Canada.",
     ],
     ledger: [
       {
         n: '20',
-        l: 'Active members who build something every month',
+        // NOT "every month" — the club meets BI-WEEKLY (~13 sessions since
+        // Sept 2025), so "monthly" understated the cadence and contradicted
+        // both case studies. This label is ledger[0], so it also renders on the
+        // home card; the error was live in two places.
+        l: 'Active members, building something at every meeting',
         src: "principal's letter",
       },
       {

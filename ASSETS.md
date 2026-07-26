@@ -29,7 +29,7 @@ The site ships with **labeled placeholders** (no dead links). Filenames map to t
 ## Footer / identity (edit `src/data/site.js`)
 | Item | Status | Action |
 |---|---|---|
-| LinkedIn | renders **nothing** while empty (no disabled pill) | Set `LINKEDIN` to the profile URL → the footer link appears; also add it to schema `sameAs`. |
+| LinkedIn | live — `/in/f-aamir-ali`, in the footer and in `Person.sameAs` | On the profile itself, set the website field to `faamirali.com` so the `sameAs` link is reciprocal (see `INDEXING.md` §3.1). |
 | Email | `fatehaamirali@gmail.com` | Confirm it's the inbox you want public. Plain `mailto:` will attract some scraper spam — a dedicated public alias is the cheap later upgrade. |
 
 ## PDFs (regenerate with `npm run make:pdfs` after editing the source case studies)

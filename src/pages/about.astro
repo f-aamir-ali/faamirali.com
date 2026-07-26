@@ -1,7 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { SITE_URL, CANONICAL_DESCRIPTION, profilePageJsonLd } from '../data/site.js';
+import { projects } from '../data/projects.js';
+import { SITE_URL, CANONICAL_DESCRIPTION, profilePageJsonLd, projectEntityJsonLd } from '../data/site.js';
+
+// Same reasoning as the home page: this page is Person.mainEntityOfPage and it
+// names all three projects in prose, so it defines them as typed entities too.
+const projectEntities = projects.map(projectEntityJsonLd);
 
 const title = 'About | F. Aamir Ali';
 const description =
@@ -12,7 +17,7 @@ const description =
   description={description}
   canonical="/about"
   ogImage="/og/about.png"
-  jsonLd={profilePageJsonLd(`${SITE_URL}/about`)}
+  jsonLd={profilePageJsonLd(`${SITE_URL}/about`, ...projectEntities)}
 >
   <section class="section">
     <div class="wrap about-grid">

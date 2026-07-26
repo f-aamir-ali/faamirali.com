@@ -311,11 +311,19 @@ each other by `@id` and a parser sees one consistent entity model:
 
 Three rules that are easy to break:
 
-1. **`sameAs` only ever gets REAL, live profiles.** It is the single strongest
-   entity-resolution signal on the site — it's how Google ties this domain to an
-   off-site profile that corroborates it. `LINKEDIN` is still `''` and is
-   filtered out rather than shipped as a dead URL. Same reasoning as the omitted
-   `Person.image`: a knowingly-dead schema URL costs trust.
+1. **`sameAs` only ever gets REAL, live profiles, and only for the SAME
+   entity.** It is the single strongest entity-resolution signal on the site —
+   it's how Google ties this domain to off-site profiles that corroborate it.
+   `Person.sameAs` is LinkedIn (`/in/f-aamir-ali`) then Instagram, built via
+   `.filter(Boolean)` so an unset constant is dropped rather than shipped as a
+   dead URL (same reasoning as the omitted `Person.image` — a knowingly-dead
+   schema URL costs trust). **Never put a related-but-different entity's URL on
+   the Person**: the school's district page lives on `schoolJsonLd.sameAs`, the
+   summit's own site on the `Event`, the club's Instagram on the club
+   `Organization`. `sameAs` asserts identity, so mixing entities is the fastest
+   way to make a knowledge graph distrust the whole file. Reciprocity is what
+   converts these from claims into verification — each profile's own website
+   field should point back at `faamirali.com`.
 2. **Cross-page `@id` references must also be *defined* on the page that uses
    them.** A bare `{'@id': ...}` pointing at a node declared only on another page
    is legal JSON-LD (an `@id` is a global URI) but a consumer parsing that page
@@ -378,7 +386,7 @@ Real photos/video live in `public/img/` and `public/video/`, referenced by `src`
 
 ## Discovery / AI-visibility layer
 
-Lives partly as static files in `public/` (`robots.txt` allow-lists AI crawlers; `llms.txt`; `sitemap.xml`; an IndexNow key file) and partly as JSON-LD emitted per-page by `Seo.astro`. `sameAs` in the Person schema stays empty until a real LinkedIn exists — don't invent one. After **any** copy change on any page, or after adding a page: re-run `npm run make:og` (OG cards render text, so stale copy = stale share cards) and re-verify `dist/` with a grep sweep for the old text plus a route-count check.
+Lives partly as static files in `public/` (`robots.txt` allow-lists AI crawlers; `llms.txt`; `sitemap.xml`; an IndexNow key file) and partly as JSON-LD emitted per-page by `Seo.astro`. `sameAs` carries only real, live profiles — never invent one, and never add an unverified URL. After **any** copy change on any page, or after adding a page: re-run `npm run make:og` (OG cards render text, so stale copy = stale share cards) and re-verify `dist/` with a grep sweep for the old text plus a route-count check.
 
 **Whenever a new page is added, update all of these in lockstep** (this is the full checklist, don't do a partial job):
 1. `src/components/Header.astro` — nav link (and dropdown link if it's a project)

@@ -163,21 +163,43 @@ not markup, is why an AI might hedge or get you wrong.
 
 In order of leverage:
 
-### 3.1 Create the LinkedIn (highest leverage single action, and it's free)
+### 3.1 The LinkedIn — wired up, but only half-done ⚠️
 
-`sameAs` in the schema is deliberately empty except for Instagram, and
-`src/data/site.js` has a `LINKEDIN` constant sitting at `''` waiting for a real
-URL. LinkedIn profiles rank extremely well for personal-name queries and are a
-strong entity anchor.
+`https://www.linkedin.com/in/f-aamir-ali` is now live in `Person.sameAs` (first
+in the array) and in the footer. LinkedIn profiles rank extremely well for
+personal-name queries and are the strongest entity anchor available here.
 
-When it exists:
+**What's still outstanding is the half that does the actual work.** Right now the
+site claims "that profile is me" and nothing corroborates it. Google treats a
+one-way `sameAs` as an unverified assertion; a *reciprocal* pair is what it
+treats as confirmation. So, on the LinkedIn profile itself:
 
-1. Set `LINKEDIN` in `src/data/site.js`. It flows automatically into
-   `Person.sameAs` and into the footer — no other change needed.
-2. On the LinkedIn profile itself, put `faamirali.com` in the website field and
-   **use wording consistent with the site.** Same job title, same project names,
-   same numbers. Consistency across two sources is the entire point; a LinkedIn
+1. **Put `faamirali.com` in the profile's website field.** This is the single
+   step that closes the loop. Without it, the schema edge is doing maybe a third
+   of the work it could.
+2. **Use wording consistent with the site.** Same titles (Co-Founder & Lead
+   Organizer of the summit; founder of the AI & Innovation Club), same project
+   names, same numbers (1,500-student school, 150+ queries, ~70 students from 14
+   schools, 20 club members). Two sources agreeing is the entire point; a profile
    that says something slightly different weakens both.
+3. **Post the case studies there.** LinkedIn posts get indexed and are the
+   cheapest inbound links available — each one linking a `/case-study/` URL.
+
+The same reciprocity logic applies to Instagram (link in bio → faamirali.com).
+
+**Other `sameAs` edges now shipping**, each on its own node — never on the
+Person, since `sameAs` asserts identity:
+
+| Node | `sameAs` | Why it helps |
+|---|---|---|
+| `HighSchool` | `surreyschools.ca/fltsec` | The school already exists in Google's index independently. This resolves "his school" to a real third-party-published place instead of a name string. |
+| `Event` (Summit) | `surreyaisummit.vercel.app` | Ties the summit record here to the event's own public site. |
+| `Organization` (Club) | the club's Instagram | The club's own audience-facing presence. |
+
+The home page and `/about` now also **define** all three project entities inline
+(`SoftwareApplication` / `Event` / `Organization`), not just link to them — so a
+crawler that reads only `faamirali.com/` gets the complete model: who he is, and
+what each of the three things is.
 
 ### 3.2 Get the headshot done — it's blocking your Knowledge Panel
 
@@ -294,7 +316,8 @@ Say the word and I'll draft it in your voice and wire up the `FAQPage` node
 | Typed project entities | SoftwareApplication, Event, Organization |
 | Breadcrumbs | Project + case-study pages |
 | `datePublished` / `dateModified` | Every Article |
-| `Person.sameAs` | Instagram only — **LinkedIn missing** (§3.1) |
+| `Person.sameAs` | LinkedIn + Instagram — **reciprocal back-links still needed** (§3.1) |
+| Other `sameAs` edges | School → district page; Event → summit site; Club → its Instagram |
 | `Person.image` | **Omitted — headshot missing** (§3.2) |
 | Titles ≤ 62 chars, descriptions ≤ 165 | Yes, all pages |
 | Inbound links / off-site corroboration | **None — this is the bottleneck** (Phase 3) |

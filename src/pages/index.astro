@@ -3,7 +3,13 @@ import Base from '../layouts/Base.astro';
 import Placeholder from '../components/Placeholder.astro';
 import ProjectRow from '../components/ProjectRow.astro';
 import { projects } from '../data/projects.js';
-import { SITE_URL, profilePageJsonLd } from '../data/site.js';
+import { SITE_URL, profilePageJsonLd, projectEntityJsonLd } from '../data/site.js';
+
+// The home page names all three projects, so it also defines them as typed
+// entities (software / event / organization) instead of only linking to them.
+// A crawler that reads just this one URL then gets the whole model: who he is,
+// and what each of the three things actually IS.
+const projectEntities = projects.map(projectEntityJsonLd);
 
 const title = 'F. Aamir Ali | Builder & Founder';
 // Kept under ~160 characters so Google shows it whole instead of truncating
@@ -17,7 +23,7 @@ const description =
   canonical="/"
   ogImage="/og/home.png"
   ogType="profile"
-  jsonLd={profilePageJsonLd(`${SITE_URL}/`)}
+  jsonLd={profilePageJsonLd(`${SITE_URL}/`, ...projectEntities)}
 >
   <!-- Hero -->
   <section class="hero section">
