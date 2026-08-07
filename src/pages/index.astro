@@ -87,10 +87,17 @@ const description =
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 56px; align-items: center; }
   .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
 
-  /* Same card treatment as Placeholder.astro's .ph, so swapping in the real
-     photo didn't change the hero's visual weight. */
+  /* Same card treatment as Placeholder.astro's .ph, but scaled to 1/1.75 of
+     the column width and centred: at full width the photo is a ~517px flat,
+     evenly lit ID shot, which dominates the hero and reads as a document scan
+     rather than a portrait. Smaller lets the masthead lead.
+
+     The 295px cap matters: below 860px the grid collapses to one column, so
+     the photo's container becomes the FULL page width and a bare 57.1% would
+     render it LARGER than on desktop (468px at an 820px viewport). The cap is
+     the desktop size, so the photo can only ever shrink from here. */
   .headshot {
-    position: relative; width: 100%; aspect-ratio: 4 / 5;
+    position: relative; width: min(57.1%, 295px); margin: 0 auto; aspect-ratio: 4 / 5;
     border-radius: var(--r-card); overflow: hidden; border: 1px solid var(--line);
     box-shadow: 0 22px 50px rgba(26, 24, 19, 0.09);
   }
