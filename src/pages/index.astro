@@ -84,7 +84,13 @@ const description =
 
 <style>
   .hero { padding-top: 118px; padding-bottom: 70px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 56px; align-items: center; }
+  /* The right column is now a FIXED 295px — the photo's capped width — rather
+     than a 0.92fr share. Once the photo stopped filling its column, a
+     proportional right column just banked whitespace that the masthead needed:
+     at 0.92fr the left column was 607px and "AAMIR ALI." on one line measures
+     600px, a 7px margin that any font-loading variance would break. Fixed
+     right column puts that space back on the left, where it buys ~229px. */
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 295px; gap: 56px; align-items: center; }
   .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
 
   /* Same card treatment as Placeholder.astro's .ph, but scaled to 1/1.75 of
@@ -92,12 +98,12 @@ const description =
      evenly lit ID shot, which dominates the hero and reads as a document scan
      rather than a portrait. Smaller lets the masthead lead.
 
-     The 295px cap matters: below 860px the grid collapses to one column, so
-     the photo's container becomes the FULL page width and a bare 57.1% would
-     render it LARGER than on desktop (468px at an 820px viewport). The cap is
-     the desktop size, so the photo can only ever shrink from here. */
+     The max-width still matters below 860px: the grid collapses to one column
+     there, so this container becomes the FULL page width and an uncapped 100%
+     would render the photo LARGER than on desktop. Capped at the desktop size,
+     it can only ever shrink from here. */
   .headshot {
-    position: relative; width: min(57.1%, 295px); margin: 0 auto; aspect-ratio: 4 / 5;
+    position: relative; width: 100%; max-width: 295px; margin: 0 auto; aspect-ratio: 4 / 5;
     border-radius: var(--r-card); overflow: hidden; border: 1px solid var(--line);
     box-shadow: 0 22px 50px rgba(26, 24, 19, 0.09);
   }
@@ -109,9 +115,16 @@ const description =
   }
   /* Masthead treatment — condensed caps, set like a file cover. */
   .hero-title { line-height: 0.9; letter-spacing: -0.01em; margin-bottom: 26px; text-transform: uppercase; font-stretch: 82%; }
-  .hero-title .t1 { display: block; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
-  .hero-title .t2 { display: block; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
-  .hero-line { font-size: clamp(17px, 2vw, 21px); color: var(--muted-2); max-width: 30ch; margin-bottom: 34px; line-height: 1.4; }
+  /* inline, not block: the two halves sit on ONE line and the newline between
+     the spans in the markup collapses to the word space. They still wrap
+     naturally to two lines on narrow viewports, which is what the clamp's
+     56px floor is sized for. */
+  .hero-title .t1 { display: inline; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
+  .hero-title .t2 { display: inline; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
+  /* Was 30ch, which forced this onto two lines to fit the old narrow column.
+     With the wider left column it sits on one line under the masthead; the
+     cap stays only so it can never outrun a comfortable measure. */
+  .hero-line { font-size: clamp(17px, 2vw, 21px); color: var(--muted-2); max-width: 66ch; margin-bottom: 34px; line-height: 1.4; }
   .hero-cta { display: flex; gap: 13px; flex-wrap: wrap; }
 
   .work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 34px; }
@@ -132,9 +145,12 @@ const description =
   @media (max-width: 860px) {
     .hero-grid { grid-template-columns: 1fr; gap: 36px; }
     .hero-right { max-width: 100%; }
-    /* The 30ch cap exists to force a deliberate break in the narrow desktop
-       two-column layout — once stacked, the column is much wider, so let it
-       use the space instead of wrapping for no reason. */
+    /* Stacked, this container is the full page width, so the desktop 295px cap
+       would let the photo take ~88% of a 375px screen — bigger than it is on
+       desktop, and the opposite of the point. Sized down again here. */
+    .headshot { width: 60%; max-width: 260px; }
+    /* The desktop cap exists to hold a comfortable measure beside the photo —
+       once stacked, the column is much wider, so let it use the space. */
     .hero-line { max-width: none; }
     .work-sub { max-width: none; }
     .work-grid { grid-template-columns: repeat(2, 1fr); }
