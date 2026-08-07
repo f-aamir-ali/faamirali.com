@@ -32,8 +32,14 @@ const description =
           <span class="dot"></span>
           <span class="eyebrow">Builder &amp; founder · Surrey, BC</span>
         </div>
+        <!-- {' '} is a real word space, not decoration: Astro's compiler
+             strips the whitespace between adjacent spans, so the markup below
+             would otherwise compile to "</span><span" and render (and be read
+             aloud by a screen reader) as "AamirAli." An expression survives
+             that pass, and unlike a CSS margin it also gives the line a legal
+             place to wrap on very narrow screens. -->
         <h1 class="hero-title">
-          <span class="t1">Aamir</span>
+          <span class="t1">Aamir</span>{' '}
           <span class="t2">Ali<span class="accent">.</span></span>
         </h1>
         <p class="hero-line">I turn ideas into real, deployed things that people actually use.</p>
@@ -113,14 +119,25 @@ const description =
     font-size: 10.5px; letter-spacing: 0.12em; color: var(--dark-text);
     background: rgba(26, 24, 19, 0.55); padding: 4px 9px; border-radius: var(--r-pill);
   }
-  /* Masthead treatment — condensed caps, set like a file cover. */
-  .hero-title { line-height: 0.9; letter-spacing: -0.01em; margin-bottom: 26px; text-transform: uppercase; font-stretch: 82%; }
+  /* Masthead treatment — mixed case, set at display size.
+     font-stretch is 100%, NOT the 82% used elsewhere for eyebrows: condensed
+     widths exist to stop ALL-CAPS sprawling, and this line is no longer caps.
+     At 82% the lowercase came out visibly pinched. Tracking is a touch tighter
+     (-0.02em) and leading a touch looser (0.95) than the caps version needed,
+     because mixed case brings ascenders the 0.9 line-height had no room for.
+
+     The clamp lives HERE rather than on the two spans because the word space
+     between them is a text node of this element: with the size only on the
+     spans, that space rendered at the h1's inherited 32px and came out 5px
+     wide against 122px letterforms. At the display size the font's own word
+     space is 18px and scales with every breakpoint for free. */
+  .hero-title { line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 26px; font-stretch: 100%; font-size: clamp(56px, 9vw, 122px); }
   /* inline, not block: the two halves sit on ONE line and the newline between
      the spans in the markup collapses to the word space. They still wrap
      naturally to two lines on narrow viewports, which is what the clamp's
      56px floor is sized for. */
-  .hero-title .t1 { display: inline; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
-  .hero-title .t2 { display: inline; font-weight: 800; font-size: clamp(56px, 9vw, 122px); }
+  .hero-title .t1 { display: inline; font-weight: 800; }
+  .hero-title .t2 { display: inline; font-weight: 800; }
   /* Was 30ch, which forced this onto two lines to fit the old narrow column.
      With the wider left column it sits on one line under the masthead; the
      cap stays only so it can never outrun a comfortable measure. */

@@ -115,7 +115,7 @@ public/
 **Color rule:** one accent color, full stop. Never add a second accent (no green, no red, no colored status dots). Status/state is communicated with **text** (a mono `fileLine`/`meta-line`), never a colored dot or pill-with-dot.
 
 **Type rule:**
-- `--font-sans` (Archivo) for all headings and body copy. Display headings (h1s) are condensed/uppercase via `font-stretch` + `text-transform: uppercase` — see `.hero-title`, `.p-name` for the pattern.
+- `--font-sans` (Archivo) for all headings and body copy. Project-page display headings are condensed/uppercase via `font-stretch` + `text-transform: uppercase` — see `.p-name` for the pattern. **The home hero (`.hero-title`) is the deliberate exception**: it is mixed case at `font-stretch: 100%`, because condensed widths exist to stop ALL-CAPS sprawling and at 82% the lowercase came out pinched. If you ever set another masthead in mixed case, open the width back to 100% with it — the two settings go together.
 - `--font-mono` (IBM Plex Mono) for: eyebrows (`.eyebrow`), meta lines (`.meta-line`), nav links, button labels, ledger/stat source lines, media captions. This is "the documentation voice" — small, uppercase, letter-spaced.
 - `--font-serif` (Newsreader, italic) is reserved **only** for quote/signature moments: the recommendation pull-quote on the home page, the FleetBot principal quote, and the signature name on `/honours`. Don't use it for body paragraphs or headings beyond the single italic word already used in each page's `<h1>` (e.g. "Built & *shipped.*", "The *story.*", "Honours & *recognition.*" — one italic serif word per h1 is the pattern, not a rule to expand).
 
