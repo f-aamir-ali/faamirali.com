@@ -54,9 +54,7 @@ export const personJsonLd = {
   alternateName: ['Fateh Aamir Ali', 'Aamir Ali'],
   url: `${SITE_URL}/`,
   mainEntityOfPage: `${SITE_URL}/about`,
-  // `image` intentionally omitted until the real headshot lands at
-  // /img/aamir.jpg — a knowingly-dead schema URL violates the
-  // don't-inflate rule. Re-add: image: `${SITE_URL}/img/aamir.jpg`
+  image: `${SITE_URL}/img/aamir.jpg`,
   jobTitle: 'Founder & Builder',
   email: `mailto:${EMAIL}`,
   // Byte-identical to llms.txt and the /about lead — sameness is the point.

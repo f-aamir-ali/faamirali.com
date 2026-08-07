@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Placeholder from '../components/Placeholder.astro';
 import { projects } from '../data/projects.js';
 import { SITE_URL, CANONICAL_DESCRIPTION, profilePageJsonLd, projectEntityJsonLd } from '../data/site.js';
 
@@ -38,7 +37,9 @@ const description =
         <p class="a-para">What I keep coming back to is where AI meets real institutions: how you actually get a tool approved, integrated, and used inside a place that already has its own way of doing things. That's the problem I want to keep working on.</p>
       </div>
       <div class="about-right">
-        <Placeholder label="headshot.jpg" sub="real photo · coming soon" ratio="4 / 5" />
+        <div class="headshot">
+          <img src="/img/aamir.jpg" alt="F. Aamir Ali" width="1600" height="2134" />
+        </div>
       </div>
     </div>
   </section>
@@ -57,6 +58,11 @@ const description =
 
   .a-para { font-size: 16.5px; line-height: 1.68; color: var(--muted-2); margin-bottom: 16px; }
   .about-right { position: sticky; top: 110px; }
+  .headshot {
+    width: 100%; aspect-ratio: 4 / 5; border-radius: var(--r-card); overflow: hidden;
+    border: 1px solid var(--line); box-shadow: 0 22px 50px rgba(26, 24, 19, 0.09);
+  }
+  .headshot img { width: 100%; height: 100%; object-fit: cover; display: block; }
   @media (max-width: 860px) {
     .about-grid { grid-template-columns: 1fr; gap: 34px; }
     .about-right { position: static; max-width: 100%; }
