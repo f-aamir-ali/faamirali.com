@@ -213,7 +213,7 @@ section('Fact consistency: site vs PDF-bound text vs llms.txt');
   // Values that must appear NOWHERE — each was a real contradiction once.
   const forbidden = [
     ['12 active members', 'club count is 20 everywhere'],
-    ['~15 bi-weekly meetings', 'meeting count is ~13 everywhere'],
+    ['~13 bi-weekly meetings', 'meeting count is ~15 everywhere (owner-confirmed Sept 2026)'],
     // Owner decision: the Summit role is Co-Founder & Lead Organizer. This has
     // flipped twice now (Lead Organizer -> Co-Founder & CEO -> back to
     // Co-Founder & Lead Organizer) — check the CURRENT locked wording in

@@ -61,7 +61,7 @@ export const caseStudies = [
     blurb:
       'The privacy rebuild that won the school over, retrieval tuning that cut a query from $0.45 to under half a cent, and one live integration across six calendars.',
     published: '2026-04-22',
-    updated: '2026-07-26',
+    updated: '2026-09-22',
     factFixes: [],
     siteEdits: [
       {
@@ -173,22 +173,19 @@ export const caseStudies = [
     blurb:
       'The full record of the club: why every meeting ships something, why no-code beat teaching programming first, and how the Best Buy entry became an open contest.',
     published: '2025-09-01',
-    updated: '2026-07-25',
-    factFixes: [
-      // Member count is 20 everywhere (locked, backed by the principal's
-      // letter). The source's Results section still said 12.
-      ['12 active members', '20 active members'],
-      // The source says ~13 in its summary and ~15 in the Solution section.
-      // ~13 is the correct figure and is what the site states.
-      ['~15 bi-weekly meetings', '~13 bi-weekly meetings'],
-    ],
+    updated: '2026-09-22',
+    // No factFixes any more: the source itself now says 20 members and ~15
+    // meetings throughout (owner-confirmed, Sept 2026). The two fixes that
+    // used to live here patched a source that contradicted itself; with the
+    // source corrected they would never match, which is a build error.
+    factFixes: [],
     siteEdits: [
       {
         // No-negatives rule: drops the competition result, keeps the scale of
         // what the members actually built and shipped.
         startsWith: '20 active members;',
         with:
-          '20 active members; ~13 bi-weekly meetings since September 2025. For the Best Buy challenge, 22 students produced AI videos and the school competed against 40+ schools across Canada. The submission was a full national-competition entry, an artist statement, a storyboard and a 1 to 4.5 minute AI-enhanced video, built and shipped by students who mostly would not have started otherwise.',
+          '20 active members; ~15 bi-weekly meetings since September 2025. For the Best Buy challenge, 22 students produced AI videos and the school competed against 40+ schools across Canada. The submission was a full national-competition entry, an artist statement, a storyboard and a 1 to 4.5 minute AI-enhanced video, built and shipped by students who mostly would not have started otherwise.',
       },
       {
         // Locked decision: no succession or "what's next" copy on the site.

@@ -8,7 +8,7 @@ An AI assistant for school staff that answers questions from the school's own of
 
 - Cut a worst-case query from **$0.45** (185,000 tokens, 12 seconds) to **under half a cent per message** at **~2.5 seconds**, with no loss of accuracy, by re-architecting retrieval.
 - Built a live integration across all **6** school athletics calendars, collapsing a fragile **20+ module** Make.com workflow to **5** with an Iterator loop; end-to-end answers in **~4 seconds**.
-- As far as I know, the first student-built AI system deployed inside the school; handled **150+ real staff queries** in its first **10 days** on a physical office terminal.
+- The first student-built system of its kind at the school, as the principal's recommendation letter states; handled **150+ real staff queries** in its first **10 days** on a physical office terminal.
 
 ## The Problem
 

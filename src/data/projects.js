@@ -233,7 +233,7 @@ export const projects = [
       'The club I founded to teach students to build with AI: 20 members, a real build every meeting, and 22 who made AI videos for a national Best Buy challenge.',
     ogImage: '/og/ai-club.png',
     published: '2025-09-01',
-    updated: '2026-07-25',
+    updated: '2026-09-22',
     tagline:
       'The club I founded so building with AI stops being a niche skill: every meeting ends with something that works.',
     acts: null,
@@ -245,7 +245,7 @@ export const projects = [
     ledger: [
       {
         n: '20',
-        // NOT "every month" — the club meets BI-WEEKLY (~13 sessions since
+        // NOT "every month" — the club meets BI-WEEKLY (~15 sessions since
         // Sept 2025), so "monthly" understated the cadence and contradicted
         // both case studies. This label is ledger[0], so it also renders on the
         // home card; the error was live in two places.
@@ -253,7 +253,7 @@ export const projects = [
         src: "principal's letter",
       },
       {
-        n: '~13',
+        n: '~15',
         l: 'Hands-on sessions run since I started the club',
         src: 'club record',
       },

@@ -37,7 +37,7 @@ Four PDFs from the NEW `*_f.md` case studies: `fleetbot-student-`, `fleetbot-sta
 
 ## Content flagged for your confirmation
 - **Model strings** in the case studies (GPT-5 Mini/Nano, Gemini 2.5 Flash, GPT-4o Mini) — verify exact provider names.
-- **Club case study internal inconsistencies** (in your source file, worth fixing there): top bullet says **20** members but Results says **12**; headline says **~13** meetings but The Solution says **~15**. Site + PDF use 20 / ~13.
+- **Club case study internal inconsistencies** — fixed in the source (Sept 2026): **20** members and **~15** bi-weekly meetings throughout, owner-confirmed.
 - **Exact Summit headcount** — replace `~70` in `projects.js` + the source case study if you get the real number.
 - **Summit group photo consent** — the photo is now live on the site; if any student in it hasn't confirmed they're OK with public web use, swap it back to the placeholder.
 

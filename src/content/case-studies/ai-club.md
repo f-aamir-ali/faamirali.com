@@ -4,7 +4,7 @@ A club I founded at Fleetwood Park Secondary to teach students how to build real
 
 **Role:** Founder & President · **Timeline:** September 2025 – present · **Stack/Tools:** Lovable, Bolt, n8n, Make.com, Chatbase, ChatGPT
 
-- **20 active members across ~13 bi-weekly, build-focused meetings** since founding in September 2025.
+- **20 active members across ~15 bi-weekly, build-focused meetings** since founding in September 2025.
 - **22 students produced AI videos** for the Best Buy Teen Tech Network "Create with AI" Challenge (with Microsoft), competing against **40+ schools across Canada**.
 - **Every meeting teaches a real build tool**, from Lovable and Bolt to n8n, Make.com and Chatbase, with members shipping working sites and automations rather than sitting through slides.
 
@@ -45,7 +45,7 @@ For the Best Buy Teen Tech Network "Create with AI" Challenge, an internal schoo
 
 ## Results & Impact
 
-12 active members; ~13 bi-weekly meetings since September 2025. For the Best Buy challenge, 22 students produced AI videos and the school competed against 40+ schools across Canada. The submission was an artist statement, a storyboard, and a 1 to 4.5 minute AI-enhanced video, and it was not among the four winners. That's still a full national-competition entry, built and shipped by students who mostly would not have started otherwise.
+20 active members; ~15 bi-weekly meetings since September 2025. For the Best Buy challenge, 22 students produced AI videos and the school competed against 40+ schools across Canada. The submission was an artist statement, a storyboard, and a 1 to 4.5 minute AI-enhanced video, and it was not among the four winners. That's still a full national-competition entry, built and shipped by students who mostly would not have started otherwise.
 
 ---
 

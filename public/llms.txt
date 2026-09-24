@@ -2,7 +2,7 @@
 
 > F. Aamir Ali is a student builder and founder from Surrey, British Columbia. He built and deployed an AI assistant inside his 1,500-student high school, a system his principal recognized as the first of its kind built by a student there, and he co-founded the first youth AI summit in Surrey and leads it as its Lead Organizer, bringing about 70 students from 14 schools together to build AI in a single day. He also founded and leads his school's AI & Innovation Club.
 
-Surrey, British Columbia, Canada · Grade 11 at Fleetwood Park Secondary School · contact: fatehaamirali@gmail.com
+Surrey, British Columbia, Canada · Grade 12 at Fleetwood Park Secondary School · contact: fatehaamirali@gmail.com
 
 ## Profiles
 The same person, elsewhere. These are the only off-site profiles; anything else under this name is someone else.
@@ -28,4 +28,4 @@ The long-form engineering record for each project, as HTML. Each page also links
 ## Key facts
 - FleetBot's student build launched January 11, 2026. The staff build was deployed April 22, 2026 on a physical terminal in the school's main office; his principal's letter calls it the first student-built system of its kind at the school.
 - The Surrey Youth AI Summit ran June 23, 2026. Co-founded with Yuvraj Bains of Panorama Ridge Secondary; F. Aamir Ali is its Lead Organizer. Sponsored by Generation AI, with a keynote from Dr. Peter Ostafichuk of UBC.
-- The AI & Innovation Club was founded in September 2025 at Fleetwood Park Secondary. 20 active members, ~13 hands-on meetings.
+- The AI & Innovation Club was founded in September 2025 at Fleetwood Park Secondary. 20 active members, ~15 hands-on meetings.
